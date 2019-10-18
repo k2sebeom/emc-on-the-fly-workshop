@@ -1,0 +1,30 @@
+baseURL = "/analytics201/"
+languageCode = "ko-KR"
+defaultContentLanguage = "ko"
+
+title = "AWS Analytics 서비스 워크샵"
+theme = "hugo-theme-learn"
+themesdir = "../.."
+metaDataFormat = "yaml"
+defaultContentLanguageInSubdir= true
+
+[params]
+  description = "AWS Analytics Services Workshop"
+  author = "Inhwan Hwang"
+  showVisitedLinks = true
+  disableBreadcrumb = false
+  disableNextPrev = false
+  themeVariant = "aws"
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+[Languages.ko]
+title = "AWS Analytics 서비스 워크샵"
+weight = 1
+languageName = "한국어"
+
+[[Languages.ko.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bullhorn'></i> 크레딧"
+url = "/credits/"
+weight = 30

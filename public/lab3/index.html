@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ko" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.58.3" />
+    <meta name="description" content="AWS Analytics Services Workshop">
+<meta name="author" content="Inhwan Hwang">
+
+    <link rel="icon" href="/analytics201/images/favicon.png" type="image/png">
+
+    <title>실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석 :: AWS Analytics 서비스 워크샵</title>
+
+    
+    <link href="/analytics201/css/nucleus.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/fontawesome-all.min.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/hybrid.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/featherlight.min.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/perfect-scrollbar.min.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/auto-complete.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/atom-one-dark-reasonable.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/theme.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/hugo-theme.css?1571327522" rel="stylesheet">
+    
+      <link href="/analytics201/css/theme-aws.css?1571327522" rel="stylesheet">
+    
+
+    <script src="/analytics201/js/jquery-3.3.1.min.js?1571327522"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/analytics201/lab3/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/analytics201">
+	<img src="/analytics201/images/logo.png" height="70px"/>
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/analytics201/js/lunr.min.js?1571327522"></script>
+<script type="text/javascript" src="/analytics201/js/auto-complete.js?1571327522"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/analytics201\/";
+    
+</script>
+<script type="text/javascript" src="/analytics201/js/search.js?1571327522"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/intro/" title="소개" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/intro/">
+          <b>1. </b>소개
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab0/" title="실습0. 사전 준비" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab0/">
+          <b>2. </b>실습0. 사전 준비
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab1/" title="실습1. Kinesis로 S3에 데이터 수집" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab1/">
+          <b>3. </b>실습1. Kinesis로 S3에 데이터 수집
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab2/" title="실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab2/">
+          <b>4. </b>실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab3/" title="실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/analytics201/lab3/">
+          <b>5. </b>실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab4/" title="실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab4/">
+          <b>6. </b>실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="/analytics201/credits/"><i class='fas fa-fw fa-bullhorn'></i> 크레딧</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> </a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      © 2019 Amazon Web Services, Inc. or its Affiliates. All rights reserved.
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/analytics201/'>홈</a> > 실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#emr-클러스터-생성">EMR 클러스터 생성</a></li>
+<li><a href="#emr-web-connection-설정-windows-os">EMR Web Connection 설정 (Windows OS)</a></li>
+<li><a href="#emr-web-connection-설정-mac-os-linux-os">EMR Web Connection 설정 (Mac OS / Linux OS)</a></li>
+<li><a href="#zeppelin을-활용한-빅데이터-분석">Zeppelin을 활용한 빅데이터 분석</a></li>
+<li><a href="#glue-data-catalog를-활용하여-s3에-저장된-데이터-분석">Glue Data Catalog를 활용하여 S3에 저장된 데이터 분석</a></li>
+<li><a href="#option-emr-클러스터에-노드-추가">Option : EMR 클러스터에 노드 추가</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<p>Amazon EMR은 관리형 Hadoop 프레임워크로서 빠르게 빅데이터 분석을 위한 Hadoop 클러스터 구성을 할 수 있습니다.<br/></p>
+
+<h4 id="emr-클러스터-생성">EMR 클러스터 생성</h4>
+
+<p>EMR 클러스터를 구성합니다. 본 Lab에서는 Spark와 Zeppelin을 활용합니다.<br/>
+1. AWS Management Console에 로그인 한 뒤 <strong>N.Virginia</strong> Region의 <strong>EMR</strong> 서비스에 접속합니다.<br/>
+2. <strong>Create cluster</strong> 버튼을 선택하여 클러스터 구성을 시작합니다.<br/>
+3. <strong>Go to advanced options</strong> 버튼을 선택하여 원하는 애플리케이션을 직접 선택하여 구성합니다.<br/>
+<img src="images/01.png" alt="image01" />
+4. <strong>Release</strong>는 <strong>emr-5.25.0</strong>, 소프트웨어는 <strong>Spark 2.4.3</strong>과 <strong>Zeppelin 0.8.1</strong>를 선택하고 <strong>“Use for Hive table metadata”</strong> 및 <strong>“Use for Spark table metadata”</strong>를 선택합니다.
+<img src="images/02.png" alt="image02" />
+5. 하드웨어 구성 단계에서는 Network 선택에서 vpc-xxxxx 를 선택하고 EC2 Subnet에서는 가장 상단의 항목을 선택합니다. 나머지 항목은 그대로 두고 <strong>Next</strong> 를 클릭합니다.
+<img src="images/03.png" alt="image03" />
+6. <strong>Cluster name</strong>에 원하는 클러스터 이름을 입력하고, <strong>Termination protection</strong> 옵션은 체크 해제 합니다. <strong>Next</strong>를 클릭합니다.
+<img src="images/04.png" alt="image04" />
+7. <strong>Security Options</strong>에서 앞에서 생성한 <strong>EC2 key pair</strong>를 선택합니다.
+<img src="images/05.png" alt="image05" />
+8. 다음과 같이 두 단계로 Security를 설정합니다.
+<img src="images/06.png" alt="image06" />
+    1 단계) EC2 Security Groups 섹션에서 Master와 Core&amp;Task의 EMR managed security groups 에는 모두 각각 default 그룹을 설정하고
+    <img src="images/07.png" alt="image07" />
+    2 단계) <strong>Master 노드의 Additional security groups에는 사전 준비에서 생성했던 security group (Port 22 허용)을 추가로 할당합니다.</strong>
+    <img src="images/08.png" alt="image08" />
+9. 화면 하단의 <strong>Create cluster</strong>를 선택하여 클러스터를 생성합니다.<br/>
+EMR 클러스터 생성에 약 <strong>10분~15분</strong> 정도 소요됩니다.
+<img src="images/09.png" alt="image09" />
+10. 클러스터의 <strong>Status</strong>가 <strong>Waiting (Cluster ready)</strong>이 되면 다음 Lab을 진행합니다.
+<img src="images/10.png" alt="image10" /></p>
+
+<h4 id="emr-web-connection-설정-windows-os">EMR Web Connection 설정 (Windows OS)</h4>
+
+<ol>
+<li>생성한 클러스터를 선택하여 Master DNS 정보를 확인합니다.
+<img src="images/11.png" alt="image11" /></li>
+<li><strong>SSH</strong>의 <strong>Tunnels</strong>에서 <strong>Source port</strong>에 8157을 <strong>Destination</strong>에는 localhost:8890 을 입력한 뒤 <strong>Add</strong>를 클릭합니다.
+<img src="images/12.png" alt="image12" /></li>
+<li><strong>Auth</strong>에는 EMR 클러스터 생성시에 사용한 Key pair의 .ppk 키를 추가합니다.</li>
+
+<li><p>마지막으로 <strong>Session</strong>의 <strong>Host Name</strong>에는 다음을 입력한 뒤 <strong>Open</strong>을 클릭하여 접속합니다.</p>
+
+<pre><code>hadoop@&lt;Master Public DNS&gt;
+</code></pre>
+
+<p><img src="images/13.png" alt="image13" />
+<img src="images/14.png" alt="image14" /></p></li>
+
+<li><p>브라우저에서 <a href="http://localhost:8157">http://localhost:8157</a> 주소로 접속합니다.
+<img src="images/15.png" alt="image15" /></p></li>
+</ol>
+
+<h4 id="emr-web-connection-설정-mac-os-linux-os">EMR Web Connection 설정 (Mac OS / Linux OS)</h4>
+
+<ol>
+<li>간단히 마스터 노드와의 SSH 터널을 만들어 접근할 수 있습니다.</li>
+<li>Master public DNS를 확인합니다.
+<img src="images/16.png" alt="image16" /></li>
+
+<li><p>터미널에서 다음 명령어를 입력합니다. 응답을 반환 하지는 않습니다.</p>
+
+<pre><code>ssh -i “&lt;Key pair name&gt;” -N -L 8157:localhost:8890 hadoop@&lt;Master public DNS&gt;
+</code></pre>
+
+<p><img src="images/17.png" alt="image17" /></p></li>
+
+<li><p>브라우저에서 <a href="http://localhost:8157">http://localhost:8157</a> 주소로 접속합니다.
+<img src="images/18.png" alt="image18" /></p></li>
+</ol>
+
+<h4 id="zeppelin을-활용한-빅데이터-분석">Zeppelin을 활용한 빅데이터 분석</h4>
+
+<ol>
+<li>Zeppelin Tutorial 을 클릭합니다.
+<img src="images/19.png" alt="image19" /></li>
+<li>여러분은 S3 (EMRFS)에 저장된 데이터(각 필드가 ‘;’로 구분)로 부터 6개의 컬럼을 읽어 필요한 자료형을 적용하고 이를 임시 테이블로 저장하는 코드를 볼 수 있습니다.
+<img src="images/20.png" alt="image20" /></li>
+
+<li><p>원본 코드에서 추가로 몇몇 컬럼을 더 가져오기(6번째 12번째 컬럼을 추가로 활용) 위하여 <a href="https://github.com/setch3000/emr-s3/blob/master/sample.scala">https://github.com/setch3000/emr-s3/blob/master/sample.scala</a> 에서 샘플 코드를 복사하여 Zepplelin notebook의 Cell에 붙여 넣기를 한 후 ▷버튼을 눌려 다시 한번 실행 해 봅니다.
+<img src="images/21.png" alt="image21" /></p>
+
+<pre><code>%spark
+import org.apache.commons.io.IOUtils
+import java.net.URL
+import java.nio.charset.Charset
+
+//Load Bank Data
+val bankText = sc.parallelize(
+IOUtils.toString(
+    new URL(&quot;https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv&quot;),
+    Charset.forName(&quot;utf8&quot;)).split(&quot;\n&quot;))
+
+case class Order(age: Integer, job: String, marital: String, education: String, amount: Integer, housing: String, campaign: String)
+
+val bank = bankText.map(s =&gt; s.split(&quot;;&quot;)).filter(s =&gt; s(0) != &quot;\&quot;age\&quot;&quot;).map(
+s =&gt; Order(s(0).toInt,
+    s(1).replaceAll(&quot;\&quot;&quot;, &quot;&quot;),
+    s(2).replaceAll(&quot;\&quot;&quot;, &quot;&quot;),
+    s(3).replaceAll(&quot;\&quot;&quot;, &quot;&quot;),
+    s(5).replaceAll(&quot;\&quot;&quot;, &quot;&quot;).toInt,
+    s(6).replaceAll(&quot;\&quot;&quot;, &quot;&quot;),
+    s(12).replaceAll(&quot;\&quot;&quot;, &quot;&quot;)
+)
+).toDF()
+bank.registerTempTable(“bank&quot;)
+bank.show()
+</code></pre></li>
+
+<li><p>로딩 된 데이터를 바탕으로 다양한 분석을 진행 해 봅니다.<br/>
+4.1 결혼 여부 / 주택 소유 여부에 따른 평균 이용 금액</p>
+
+<pre><code>%sql
+select marital,housing,
+avg(amount)
+from bank
+group by marital, housing
+</code></pre>
+
+<p><img src="images/22.png" alt="image22" />
+4.2 직업별 평균 이용 금액</p>
+
+<pre><code>%sql
+select job, avg(amount)
+from bank
+group by job
+order by 2
+</code></pre>
+
+<p><img src="images/23.png" alt="image23" />
+4.3 20대 나이별 평균 이용 금액</p>
+
+<pre><code>%sql
+select age, avg(amount)
+from bank
+where age &gt; ${minAge=19} and
+age &lt; ${maxAge=30}
+group by age
+</code></pre>
+
+<p><img src="images/24.png" alt="image24" />
+4.4 연령/교육 수준별 이용 금액</p>
+
+<pre><code>%sql
+select age, amount, education,
+housing
+from bank
+</code></pre>
+
+<p><img src="images/25.png" alt="image25" />
+4.5 직업 별 평균 마케팅 노출 횟수</p>
+
+<pre><code>%sql
+select job, avg(campaign) as
+campaign
+from bank
+group by job
+</code></pre>
+
+<p><img src="images/26.png" alt="image26" />
+4.6 결혼 직업 별 이용 금액 합계</p>
+
+<pre><code>%sql
+select marital, job, sum(amount)
+from bank
+group by marital, job
+</code></pre>
+
+<p><img src="images/27.png" alt="image27" /></p></li>
+
+<li><p>분석 결과를 그래프로 표현 하면 아래와 같이 원하는 정보를 같은 방식으로 분석할 수 있습니다.
+<img src="images/28.png" alt="image28" /></p></li>
+</ol>
+
+<h4 id="glue-data-catalog를-활용하여-s3에-저장된-데이터-분석">Glue Data Catalog를 활용하여 S3에 저장된 데이터 분석</h4>
+
+<p>EMR 클러스터에서 Glue의 카탈로그를 조회하여 손쉽게 S3에 저장된 데이터를 분석 할 수 있습니다.<br/>
+1. 화면 좌측 상단의 Zeppelin 이미지를 클릭하여 Zeppelin의 첫페이지로 이동합니다.<br/>
+2. Create new note 버튼을 클릭 합니다.
+<img src="images/29.png" alt="image29" />
+3. ’TEST’라는 이름으로 새 노트를 생성 합니다.
+<img src="images/30.png" alt="image30" />
+4. Glue의 카탈로그를 조회하여 데이터베이스 리스트를 확인 합니다.</p>
+
+<pre><code>%spark
+spark.sql(&quot;show databases&quot;).show()
+</code></pre>
+
+<p><img src="images/31.png" alt="image31" />
+5. 확인된 데이터베이스 리스트 중 “immersion day”의 테이블들을 확인해 봅니다.</p>
+
+<pre><code>%spark
+spark.catalog.setCurrentDatabase(&quot;immersion day&quot;)
+spark.sql(&quot;show tables&quot;).show()
+</code></pre>
+
+<p><img src="images/32.png" alt="image32" />
+6. 다음과 같이 쿼리를 수행하여 데이터 분석을 진행 합니다.</p>
+
+<pre><code>%sql
+select region, status, count(*)
+from parquet
+group by region, status
+order by region
+</code></pre>
+
+<p><img src="images/33.png" alt="image33" /></p>
+
+<h4 id="option-emr-클러스터에-노드-추가">Option : EMR 클러스터에 노드 추가</h4>
+
+<p>EMR 클러스터에서 Hadoop의 슬레이브 노드에 해당하는 작업을 실행하는 Core 노드와 Task 노드를 쉽게 추가할 수 있습니다.<br/>
+1. AWS Management Console에 로그인 한 뒤 <strong>EMR</strong> 서비스에 접속합니다.<br/>
+2. 생성한 클러스터를 선택한 후, Hardware 탭을 선택합니다.
+<img src="images/34.png" alt="image34" />
+3. <strong>Core</strong>의 <strong>Instance Count</strong>의 <strong>Resize</strong> 버튼을 클릭하여 3 으로 변경합니다.
+<img src="images/35.png" alt="image35" />
+4. <strong>Add task Instance group</strong>을 클릭하여 <strong>Task</strong> 노드를 1개 추가합니다.
+<img src="images/35.png" alt="image36" />
+5. Core와 Task 노드의 크기 변경이 시작됩니다. 각 노드에 Auto Scaling을 적용할 수도 있습니다.
+<img src="images/37.png" alt="image37" /></p>
+
+<hr />
+
+<p align="center">
+© 2019 Amazon Web Services, Inc. 또는 자회사, All rights reserved.
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/analytics201/lab2/" title="실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/analytics201/lab4/" title="실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/analytics201/js/clipboard.min.js?1571327522"></script>
+    <script src="/analytics201/js/perfect-scrollbar.min.js?1571327522"></script>
+    <script src="/analytics201/js/perfect-scrollbar.jquery.min.js?1571327522"></script>
+    <script src="/analytics201/js/jquery.sticky.js?1571327522"></script>
+    <script src="/analytics201/js/featherlight.min.js?1571327522"></script>
+    <script src="/analytics201/js/highlight.pack.js?1571327522"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/analytics201/js/modernizr.custom-3.6.0.js?1571327522"></script>
+    <script src="/analytics201/js/learn.js?1571327522"></script>
+    <script src="/analytics201/js/hugo-learn.js?1571327522"></script>
+
+    <link href="/analytics201/mermaid/mermaid.css?1571327522" rel="stylesheet" />
+    <script src="/analytics201/mermaid/mermaid.js?1571327522"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+  </body>
+</html>

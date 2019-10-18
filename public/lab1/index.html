@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.58.3" />
+    <meta name="description" content="AWS Analytics Services Workshop">
+<meta name="author" content="Inhwan Hwang">
+
+    <link rel="icon" href="/analytics201/images/favicon.png" type="image/png">
+
+    <title>실습1. Kinesis로 S3에 데이터 수집 :: AWS Analytics 서비스 워크샵</title>
+
+    
+    <link href="/analytics201/css/nucleus.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/fontawesome-all.min.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/hybrid.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/featherlight.min.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/perfect-scrollbar.min.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/auto-complete.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/atom-one-dark-reasonable.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/theme.css?1571327522" rel="stylesheet">
+    <link href="/analytics201/css/hugo-theme.css?1571327522" rel="stylesheet">
+    
+      <link href="/analytics201/css/theme-aws.css?1571327522" rel="stylesheet">
+    
+
+    <script src="/analytics201/js/jquery-3.3.1.min.js?1571327522"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/analytics201/lab1/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/analytics201">
+	<img src="/analytics201/images/logo.png" height="70px"/>
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/analytics201/js/lunr.min.js?1571327522"></script>
+<script type="text/javascript" src="/analytics201/js/auto-complete.js?1571327522"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/analytics201\/";
+    
+</script>
+<script type="text/javascript" src="/analytics201/js/search.js?1571327522"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/intro/" title="소개" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/intro/">
+          <b>1. </b>소개
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab0/" title="실습0. 사전 준비" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab0/">
+          <b>2. </b>실습0. 사전 준비
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab1/" title="실습1. Kinesis로 S3에 데이터 수집" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/analytics201/lab1/">
+          <b>3. </b>실습1. Kinesis로 S3에 데이터 수집
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab2/" title="실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab2/">
+          <b>4. </b>실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab3/" title="실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab3/">
+          <b>5. </b>실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab4/" title="실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab4/">
+          <b>6. </b>실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="/analytics201/credits/"><i class='fas fa-fw fa-bullhorn'></i> 크레딧</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> </a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      © 2019 Amazon Web Services, Inc. or its Affiliates. All rights reserved.
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/analytics201/'>홈</a> > 실습1. Kinesis로 S3에 데이터 수집
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#lab-설명">Lab 설명</a></li>
+<li><a href="#lab-architecture">Lab Architecture</a></li>
+<li><a href="#kinesis-firehose-생성-원본-데이터">Kinesis Firehose 생성 (원본 데이터)</a></li>
+<li><a href="#데이터-수집-확인">데이터 수집 확인</a></li>
+<li><a href="#kinesis-firehose-생성-아웃풋-데이터">Kinesis Firehose 생성 (아웃풋 데이터)</a></li>
+<li><a href="#kinesis-analytics-application-생성">Kinesis Analytics Application - 생성</a></li>
+<li><a href="#kinesis-analytics-application-source-지정">Kinesis Analytics Application - Source 지정</a></li>
+<li><a href="#kinesis-analytics-application-sql-실시간-쿼리">Kinesis Analytics Application - SQL 실시간 쿼리</a></li>
+<li><a href="#kinesis-analytics-application-destination-지정">Kinesis Analytics Application - Destination 지정</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              실습1. Kinesis로 S3에 데이터 수집
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<h4 id="lab-설명">Lab 설명</h4>
+
+<p>이번 Lab은 EC2에서 발생하는 데이터를 Kinesis Firehose를 통해 <strong>수집</strong>하여 S3에 <strong>저장</strong>합니다. 그 후 Kinesis Analytics로 실시간 쿼리해 <strong>분석</strong>해보고, 결과를 S3에 다시 <strong>저장</strong>합니다.</p>
+
+<h4 id="lab-architecture">Lab Architecture</h4>
+
+<p><img src="images/01.png" alt="image01" /></p>
+
+<h4 id="kinesis-firehose-생성-원본-데이터">Kinesis Firehose 생성 (원본 데이터)</h4>
+
+<p>Kinesis Firehose를 통해 앞서 생성한 EC2가 발생시키는 실시간 데이터를 S3, Redshift, ElasticSearch 등의 목적지에 수집할 수 있습니다.<br/></p>
+
+<ol>
+<li>AWS Management Console에서 <strong>Kinesis</strong> 서비스를 선택합니다. (Region : N.Virginia)</li>
+<li><strong>Get Started</strong> 버튼을 클릭합니다.</li>
+<li><strong>Deliver streaming data with Kinesis Firehose delivery streams</strong> 메뉴의 <strong>Create delivery stream</strong> 을 클릭하여 새로운 Firehose 전송 스트림 생성을 시작합니다.
+<img src="images/02.png" alt="image02" /></li>
+<li><strong>Delivery stream name</strong>에 <strong>Source</strong> 를 입력한 뒤 <strong>Next</strong>를 클릭합니다.<br/>
+(주의 : Source 이외의 name을 지정할 경우 EC2에서 Kinesis Firehose로 log가 전송되지 않습니다.)</li>
+<li><strong>Record transformation</strong> / <strong>Record format conversion</strong> 은 default인 Disabled로 두고 <strong>Next</strong>를 클릭합니다.</li>
+<li><strong>Destination</strong>은 Amazon S3를 선택하고 아래 <strong>S3 bucket</strong>은 앞서 생성한 <strong>bucket</strong>을 선택합니다. <strong>Prefix</strong>에는 source/ 를 입력합니다. <strong>Next</strong>를 클릭합니다
+<img src="images/03.png" alt="image03" /></li>
+<li><strong>Buffer size</strong>는 1MB, <strong>Buffer interval</strong>은 60 seconds로 설정합니다.</li>
+<li>아래 <strong>IAM role</strong>에서 <strong>Create new, or Choose</strong> 버튼을 클릭합니다.
+<img src="images/04.png" alt="image04" /></li>
+<li>새로 열린 탭에서 필요한 정책이 포함된 IAM 역할 <strong>firehose_delivery_role</strong>을 자동으로 생성합니다. <strong>Allow</strong> 버튼을 클릭하여 진행합니다.
+<img src="images/05.png" alt="image05" /></li>
+<li>새롭게 생성된 역할이 추가된 것을 확인한 뒤 <strong>Next</strong> 버튼을 클릭합니다.
+<img src="images/06.png" alt="image06" /></li>
+<li>Review에서 입력한 정보를 확인한 뒤 틀린 부분이 없다면 <strong>Create delivery stream</strong> 버튼을 클릭하여 Firehose 생성을 완료합니다.
+<img src="images/07.png" alt="image07" /></li>
+<li><strong>Firehose delivery streams</strong> 가 생성 되었습니다.
+<img src="images/08.png" alt="image08" /></li>
+</ol>
+
+<h4 id="데이터-수집-확인">데이터 수집 확인</h4>
+
+<p>생성한 Firehose가 정상적으로 데이터를 수집하는지 확인해봅니다.<br/></p>
+
+<ol>
+<li>앞서 생성한 EC2 인스턴스에 SSH 접속을 합니다.</li>
+
+<li><p>firehose.py 를 실행합니다.</p>
+
+<pre><code class="language-markup">python firehose.py
+</code></pre></li>
+
+<li><p>매 초 데이터가 발생하는 것을 확인합니다. 충분한 데이터 수집을 위해 실행 중인 상태로 다음 단계를 진행합니다.</p></li>
+
+<li><p>몇 분 뒤 생성한 S3 bucket에 가보면 생성된 원본 데이터가 Firehose를 통해 S3에 저장되는 것을 확인할 수 있습니다. 이 때 지정한 Prefix인 source 폴더에 데이터가 저장됩니다.
+<img src="images/09.png" alt="image09" />
+<img src="images/10.png" alt="image10" /></p></li>
+</ol>
+
+<h4 id="kinesis-firehose-생성-아웃풋-데이터">Kinesis Firehose 생성 (아웃풋 데이터)</h4>
+
+<p>앞서 생성한 Firehose 전송 스트림과 동일한 방법으로 Destination 전송 스트림을 생성합니다. 이 때, Delivery stream name과 S3 destination의 Prefix만 새로운 값을 입력합니다.<br/></p>
+
+<ol>
+<li><strong>Delivery stream name</strong>에 Destination 를 입력한 뒤 <strong>Next</strong>를 클릭합니다.
+<img src="images/11.png" alt="image11" /></li>
+<li><strong>Destination</strong>은 Amazon S3를 선택하고 아래 <strong>S3 bucket</strong>은 앞서 생성한 bucket을 선택합니다. <strong>Prefix</strong>에는 destination/ 을 입력합니다. <strong>Next</strong>를 클릭합니다.
+<img src="images/12.png" alt="image12" /></li>
+<li><strong>Buffer size</strong>는 1MB, <strong>Buffer interval</strong>은 60 seconds로 설정합니다.</li>
+<li><strong>IAM Role</strong>은 앞서 생성된 firehose_delivery_role을 선택합니다. <strong>Policy Name</strong>은 Create a new Role Policy를 선택합니다.
+<img src="images/13.png" alt="image13" /></li>
+<li>Source, Destination 2개의 Firehose 전송 스트림 생성을 완료합니다.
+<img src="images/14.png" alt="image14" /></li>
+</ol>
+
+<h4 id="kinesis-analytics-application-생성">Kinesis Analytics Application - 생성</h4>
+
+<p>Kinesis Analytics를 활용하여 스트리밍 데이터를 처리할 application을 생성합니다.<br/></p>
+
+<ol>
+<li>AWS Management Console에 로그인 한 뒤 <strong>Kinesis</strong> 서비스에 접속합니다.</li>
+<li><strong>Kinesis analytics applications</strong> 의 <strong>Create analytics application</strong>을 선택합니다.
+<img src="images/15.png" alt="image15" /></li>
+<li><strong>Application name</strong>에 <strong>StreamApplication</strong>을 입력하고 <strong>Create application</strong> 버튼을 클릭합니다.
+<img src="images/16.png" alt="image16" /></li>
+</ol>
+
+<h4 id="kinesis-analytics-application-source-지정">Kinesis Analytics Application - Source 지정</h4>
+
+<ol>
+<li>생성한 application 화면으로 이동 후 <strong>Connect streaming data</strong> 버튼을 클릭합니다.
+<img src="images/17.png" alt="image17" /></li>
+<li><strong>Source</strong>는 <strong>Kinesis Firehose delivery stream</strong> 을 선택하고 앞서 생성한 2개의 스트림 중 <strong>Source</strong> 를 선택합니다. <strong>[Discover Schema]</strong> 버튼을 클릭하여 Schema를 분석합니다. Schema 분석 후 아래에 샘플 데이터를 보여줍니다. (Schema 탐색이 실패했다면 EC2 인스턴스에서 firehose.py 가 실행 중 인지 확인합니다)
+<img src="images/18.png" alt="image18" />
+<img src="images/19.png" alt="image19" /></li>
+<li>Schema분석이 끝나면 DATE 데이터 타입을 지정해주기 위해 <strong>Edit schema</strong> 버튼을 클릭합니다.
+<img src="images/20.png" alt="image20" /></li>
+<li><strong>OccurrenceStartDate</strong>와 <strong>DiscoveryDate</strong>의 타입을 <strong>DATE</strong>로 변경해줍니다. <strong>NetLoss</strong>, <strong>RecoveryAmount</strong>, <strong>EstimatedGrossLoss</strong>는 <strong>DOUBLE</strong>로 변경해줍니다. <strong>Save schema and update stream samples</strong> 버튼을 클릭하여 저장합니다.
+<img src="images/21.png" alt="image21" /></li>
+<li>저장이 완료되면 <strong>Exit(done)</strong> 버튼을 클릭한 뒤, <strong>Save and continue</strong> 버튼을 클릭하여 Source 지정을 완료합니다.
+<img src="images/22.png" alt="image22" /></li>
+</ol>
+
+<h4 id="kinesis-analytics-application-sql-실시간-쿼리">Kinesis Analytics Application - SQL 실시간 쿼리</h4>
+
+<ol>
+<li><strong>Go to SQL editor</strong> 메뉴로 이동합니다.
+<img src="images/23.png" alt="image23" /></li>
+
+<li><p>Text editor에 다음과 같은 SQL문을 입력한 뒤 <strong>Save and run SQL</strong> 버튼을 클릭합니다. (이 때 Source data가 없다는 문구가 표시된다면 EC2에서 firehose.py가 실행 중인지 확인 후 Refresh 합니다.)</p>
+
+<pre><code class="language-markup">CREATE OR REPLACE STREAM &quot;DESTINATION_SQL_BASIC_STREAM&quot; (
+Region VARCHAR(16), 
+Business VARCHAR(32), 
+Name VARCHAR(16), 
+Status VARCHAR(16), 
+RiskCategory VARCHAR(64), 
+RiskSubCategory VARCHAR(64),
+DiscoveryDate DATE, 
+OccurrenceStartDate DATE, 
+NetLoss DOUBLE,
+RecoveryAmount DOUBLE, 
+EstimatedGrossLoss DOUBLE);
+
+CREATE OR REPLACE PUMP &quot;STREAM_PUMP_1&quot; AS 
+INSERT INTO
+    &quot;DESTINATION_SQL_BASIC_STREAM&quot;
+SELECT STREAM &quot;Region&quot;, &quot;Business&quot;, &quot;Name&quot;, &quot;Status&quot;, &quot;RiskCategory&quot;, &quot;RiskSubCategory&quot;, &quot;DiscoveryDate&quot;, &quot;OccurrenceStartDate&quot;, &quot;NetLoss&quot;, &quot;RecoveryAmount&quot;, &quot;EstimatedGrossLoss&quot; 
+FROM SOURCE_SQL_STREAM_001&quot;;
+</code></pre></li>
+
+<li><p>SQL 쿼리가 실시간으로 수행되는 것을 확인할 수 있습니다. <strong>Close</strong> 버튼을 클릭합니다.
+<img src="images/24.png" alt="image24" />
+<img src="images/25.png" alt="image25" /></p></li>
+</ol>
+
+<h4 id="kinesis-analytics-application-destination-지정">Kinesis Analytics Application - Destination 지정</h4>
+
+<ol>
+<li>Kinesis Analytics의 SQL 수행 결과를 S3에 저장할 수 있습니다. Kinesis Analytics StreamApplication 화면으로 돌아가 Connect to a destination 을 클릭합니다.
+<img src="images/26.png" alt="image26" /></li>
+<li>
+
+<ul>
+<li>Destination : Kinesis Firehose delivery stream</li>
+<li>Kinesis Firehose delivery stream : Destination</li>
+<li>In-application stream name : DESTINATION_SQL_BASIC_STREAM,</li>
+<li>Output format : JSON</li>
+<li>Access to chosen resources : Create</li>
+<li>update IAM role kinesis-analytics-StreamApplication-us-east-1
+을 지정한 후 Save and Continue 버튼을 클릭합니다.
+<img src="images/27.png" alt="image27" /></li>
+</ul></li>
+<li><strong>Destination</strong>이 설정 되었습니다. <strong>Exit to Kinesis Analytics applications</strong> 을 클릭합니다.
+<img src="images/28.png" alt="image28" /></li>
+<li>EC2에서 firehose.py 실행을 중단했다면 다시 실행합니다.</li>
+<li>몇 분 뒤 S3 bucket을 보면 설정한 Prefix인 destination 폴더가 생성된 것을 확인할 수 있습니다. 해당 폴더에는 설정한대로 JSON 포맷으로 데이터가 수집됩니다.
+<img src="images/29.png" alt="image29" />
+<img src="images/30.png" alt="image30" /></li>
+</ol>
+
+<hr />
+
+<p align="center">
+© 2019 Amazon Web Services, Inc. 또는 자회사, All rights reserved.
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/analytics201/lab0/" title="실습0. 사전 준비"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/analytics201/lab2/" title="실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/analytics201/js/clipboard.min.js?1571327522"></script>
+    <script src="/analytics201/js/perfect-scrollbar.min.js?1571327522"></script>
+    <script src="/analytics201/js/perfect-scrollbar.jquery.min.js?1571327522"></script>
+    <script src="/analytics201/js/jquery.sticky.js?1571327522"></script>
+    <script src="/analytics201/js/featherlight.min.js?1571327522"></script>
+    <script src="/analytics201/js/highlight.pack.js?1571327522"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/analytics201/js/modernizr.custom-3.6.0.js?1571327522"></script>
+    <script src="/analytics201/js/learn.js?1571327522"></script>
+    <script src="/analytics201/js/hugo-learn.js?1571327522"></script>
+
+    <link href="/analytics201/mermaid/mermaid.css?1571327522" rel="stylesheet" />
+    <script src="/analytics201/mermaid/mermaid.js?1571327522"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+  </body>
+</html>

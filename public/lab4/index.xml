@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift on AWS Analytics 서비스 워크샵</title>
+    <link>/analytics201/lab4/</link>
+    <description>Recent content in 실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift on AWS Analytics 서비스 워크샵</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    
+	<atom:link href="/analytics201/lab4/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
