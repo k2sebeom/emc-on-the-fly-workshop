@@ -147,9 +147,9 @@ ORDER BY region;
 ![image28](images/28.png)
 17. QuickSight 화면으로 돌아가서 우측 상단의 **공유** > **분석 공유**를 클릭합니다.
 ![image29](images/29.png)
-18. **BI_user01**을 선택한 후 **공유** 버튼을 클릭합니다.
+18. **BI_user01**을 선택한 후 {{% button href="#" %}}공유{{% /button %}} 버튼을 클릭합니다.
 ![image30](images/30.png)
-19. 사용자는 다음과 같은 Email을 수신합니다. **Click to View**를 클릭하여 분석결과를 확인할 수 있습니다.
+19. 사용자는 다음과 같은 이메일을 수신합니다. {{% button href="#" %}}Click to View{{% /button %}} 를 클릭하여 분석 결과를 확인할 수 있습니다.
 ![image31](images/31.png)
 
 ---
