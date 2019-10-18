@@ -4,7 +4,7 @@ defaultContentLanguage = "ko"
 
 title = "AWS Analytics 서비스 워크샵"
 theme = "hugo-theme-learn"
-themesdir = "../.."
+themesdir = "."
 metaDataFormat = "yaml"
 defaultContentLanguageInSubdir= true
 
