@@ -77,7 +77,7 @@ CREATE EXTERNAL TABLE spectrum.sales(
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales/'
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales/'
 TABLE PROPERTIES ('numRows'='172000')
 ```
 **Query editor**에는 아무런 정보가 표시되지 않습니다. 외부 테이블은 테이블의 목록에 표시되지 않기 때문입니다. 
@@ -134,7 +134,7 @@ starttime TIMESTAMP
 
 ```
 COPY event
-FROM 's3://id-redshift-uswest2/tickit/allevents_pipe.txt'
+FROM 's3://id-redshift-apnortheast2/tickit/allevents_pipe.txt'
 IAM_ROLE 'INSERT-YOUR-REDSHIFT-ROLE'
 DELIMITER '|'
 TIMEFORMAT 'YYYY-MM-DD HH:MI:SS'
@@ -181,7 +181,7 @@ ORDER BY 2 DESC
 다음은 분할된 데이터를 보여주는 디렉터리 목록으로, 디렉터리에 월별로 파티션된 S3 파일 집합을 표시합니다. (참고: AWS Cli가 설치된 로컬 머신에서 확인 가능 합니다.)
 
 ```
-$ aws s3 ls s3://id-redshift-uswest2/tickit/spectrum/sales_partition/
+$ aws s3 ls s3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/
 ```
 
 ```
@@ -218,7 +218,7 @@ PARTITIONED BY (saledate DATE)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '|'
 STORED AS TEXTFILE
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/'
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/'
 TABLE PROPERTIES ('numRows'='172000')
 ```
 
@@ -230,40 +230,40 @@ salesdate 필드에 따라 테이블이 파티션됨을 Redshift Spectrum에 알
 ```
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-01-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-01/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-01/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-02-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-02/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-02/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-03-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-03/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-03/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-04-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-04/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-04/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-05-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-05/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-05/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-06-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-06/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-06/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-07-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-07/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-07/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-08-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-08/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-08/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-09-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-09/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-09/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-10-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-10/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-10/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-11-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-11/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-11/';
 ALTER TABLE spectrum.sales_partitioned
 ADD PARTITION (saledate='2008-12-01')
-LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-12/';
+LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-12/';
 ```
 
 이제 특정 salesdate를 사용하는 모든 쿼리에서 해당 날짜와 관련된 디렉터리만 스캔합니다.<br/>
