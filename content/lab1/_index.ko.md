@@ -107,7 +107,7 @@ CREATE OR REPLACE PUMP "STREAM_PUMP_1" AS
     INSERT INTO
         "DESTINATION_SQL_BASIC_STREAM"
     SELECT STREAM "Region", "Business", "Name", "Status", "RiskCategory", "RiskSubCategory", "DiscoveryDate", "OccurrenceStartDate", "NetLoss", "RecoveryAmount", "EstimatedGrossLoss" 
-    FROM SOURCE_SQL_STREAM_001";
+    FROM "SOURCE_SQL_STREAM_001";
 ```
 
 3. SQL 쿼리가 실시간으로 수행되는 것을 확인할 수 있습니다. **Close** 버튼을 클릭합니다.
