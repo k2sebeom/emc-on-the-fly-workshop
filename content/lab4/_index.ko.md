@@ -15,7 +15,7 @@ pre: "<b>6. </b>"
 ![image02](images/03.png)
 
 #### Amazon Redshift 클러스터 생성
-실습을 위하여 Redshift 클러스터를 생성합니다. 클러스터는 샘플 데이터가 있는 **us-west-2 (오레곤)** 와 동일한 리전에 생성해야 합니다. 또한 Redshift 의 접속을 위하여 보안 그룹 설정을 주의하여 생성 하시기 바랍니다. <br/>
+실습을 위하여 Redshift 클러스터를 생성합니다. 클러스터는 샘플 데이터가 있는 **us-west-2 (Oregon)** 와 동일한 리전에 생성해야 합니다. 또한 Redshift 의 접속을 위하여 보안 그룹 설정을 주의하여 생성 하시기 바랍니다. <br/>
 
 1. AWS Management Console에서 **Redshift** 서비스에 접속 후 좌측 **Clusters** 탭을 선택 합니다.
 2. **Launch cluster** 버튼을 클릭하여 클러스터 생성을 시작합니다.
@@ -48,20 +48,19 @@ pre: "<b>6. </b>"
 먼저 **외부 스키마**를 정의합니다. 외부 스키마는 외부 데이터 카탈로그에 있는 데이터베이스를 참조하고, 클러스터가 사용자 대신 Amazon S3에 액세스할 수 있도록 권한을 부여하는 IAM 역할 식별자(ARN)를 제공합니다. <br/>
 
 1. **&nbsp; _INSERT-YOUR-REDSHIFT-ROLE_ &nbsp;**을 실습 2에서 생성한 redshift_role의 ARN값으로 대체하고 **Query editor**에서 이 명령을 실행합니다. 
-``` markup
+``` 
 CREATE EXTERNAL SCHEMA spectrum
 FROM DATA CATALOG
 DATABASE 'spectrumdb'
 IAM_ROLE 'INSERT-YOUR-REDSHIFT-ROLE'
 CREATE EXTERNAL DATABASE IF NOT EXISTS
 ```
-**Query editor**의 결과는 별도 정보가 표시되지 않고 "No records found"라는 메시지를 수신합니다. <br/>
-Schema "spectrum" already exists라는 메시지를 수신하면, 다음 단계로 진행하십시오. <br/>
+**Query editor**의 결과는 별도 정보가 표시되지 않고 "Statement completed successfully"라는 메시지를 수신하면, 다음 단계로 진행하십시오. <br/>
 이제 spectrum 스키마에 저장될 외부 테이블을 생성합니다.
 ![image08](images/08.png)
 
 2. **Query editor**에서 이 명령을 실행하여 외부 테이블을 생성합니다. 
-``` markup
+``` 
 CREATE EXTERNAL TABLE spectrum.sales(
     salesid INTEGER,
     listid INTEGER,
@@ -77,7 +76,7 @@ CREATE EXTERNAL TABLE spectrum.sales(
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales/'
+LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales/'
 TABLE PROPERTIES ('numRows'='172000')
 ```
 **Query editor**에는 아무런 정보가 표시되지 않습니다. 외부 테이블은 테이블의 목록에 표시되지 않기 때문입니다. 
@@ -94,19 +93,19 @@ TABLE PROPERTIES ('numRows'='172000')
 이 실습에서는 외부 테이블에 대해 쿼리를 실행합니다. 이 쿼리는 Redshift Spectrum을 사용하여 Amazon S3에서 바로 데이터를 처리합니다.<br/>
 
 1. 다음 명령을 실행하여 S3에 저장된 행의 수를 쿼리합니다. 
-``` markup
+``` 
 SELECT COUNT(*) FROM spectrum.sales
 ```
 출력값은 파일에 172,456 개의 레코드가 있음을 보여줍니다.
 
 2. 다음 명령을 실행하여 외부 테이블에 저장된 데이터 샘플을 확인합니다.
-``` markup
+``` 
 SELECT * FROM spectrum.sales LIMIT 10
 ```
 S3에 저장된 탭으로 분리된 데이터가 일반 Redshift 테이블과 정확히 동일하게 표시되는 것을 확인할 수 있습니다. Spectrum은 S3에서 데이터를 읽지만 마치 Redshift가 직접 읽는 것처럼 표시합니다.<br/>
 또한, 쿼리는 합계 계산과 같은 일반 SQL 문을 포함할 수 있습니다. <br/>
 다음 명령을 실행하여 일의 매출을 계산합니다.
-``` markup
+``` 
 SELECT SUM(pricepaid)
 FROM spectrum.sales
 WHERE saletime::date = '2008-06-26'
@@ -118,7 +117,7 @@ Amazon Redshift Spectrum은 임시 Amazon Redshift 테이블로 데이터를 로
 1. 다음 명령을 실행하여 일반 Redshift 테이블을 생성합니다.<br/>
 event 테이블이 페이지 왼쪽의 테이블 목록에 표시됩니다.
 
-``` markup
+``` 
 CREATE TABLE event(
 eventid INTEGER NOT NULL DISTKEY,
 venueid SMALLINT NOT NULL,
@@ -129,12 +128,12 @@ starttime TIMESTAMP
 )
 ```
 
-2. **INSERT-YOUR-REDSHIFT-ROLE**을 이전 단계에서 생성한 redshift_role의 ARN 값을 대체하고 pgweb에서 이 명령을 실행하여 데이터를 events 테이블로 로드합니다. <br/>
+2. **INSERT-YOUR-REDSHIFT-ROLE**을 이전 단계에서 생성한 redshift_role의 ARN 값을 대체하고 Query editor에서 이 명령을 실행하여 데이터를 events 테이블로 로드합니다. <br/>
 약 30초 가량의 로딩 시간이 소요됩니다.
 
 ```
 COPY event
-FROM 's3://id-redshift-apnortheast2/tickit/allevents_pipe.txt'
+FROM 's3://id-redshift-uswest2/tickit/allevents_pipe.txt'
 IAM_ROLE 'INSERT-YOUR-REDSHIFT-ROLE'
 DELIMITER '|'
 TIMEFORMAT 'YYYY-MM-DD HH:MI:SS'
@@ -181,7 +180,7 @@ ORDER BY 2 DESC
 다음은 분할된 데이터를 보여주는 디렉터리 목록으로, 디렉터리에 월별로 파티션된 S3 파일 집합을 표시합니다. (참고: AWS Cli가 설치된 로컬 머신에서 확인 가능 합니다.)
 
 ```
-$ aws s3 ls s3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/
+$ aws s3 ls s3://id-redshift-uswest2/tickit/spectrum/sales_partition/
 ```
 
 ```
@@ -218,7 +217,7 @@ PARTITIONED BY (saledate DATE)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '|'
 STORED AS TEXTFILE
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/'
+LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/'
 TABLE PROPERTIES ('numRows'='172000')
 ```
 
@@ -229,18 +228,18 @@ salesdate 필드에 따라 테이블이 파티션됨을 Redshift Spectrum에 알
 
 ```
 ALTER TABLE spectrum.sales_partitioned ADD 
-PARTITION (saledate='2008-01-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-01/'
-PARTITION (saledate='2008-02-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-02/'
-PARTITION (saledate='2008-03-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-03/'
-PARTITION (saledate='2008-04-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-04/'
-PARTITION (saledate='2008-05-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-05/'
-PARTITION (saledate='2008-06-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-06/'
-PARTITION (saledate='2008-07-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-07/'
-PARTITION (saledate='2008-08-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-08/'
-PARTITION (saledate='2008-09-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-09/'
-PARTITION (saledate='2008-10-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-10/'
-PARTITION (saledate='2008-11-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-11/'
-PARTITION (saledate='2008-12-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-12/'
+PARTITION (saledate='2008-01-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-01/'
+PARTITION (saledate='2008-02-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-02/'
+PARTITION (saledate='2008-03-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-03/'
+PARTITION (saledate='2008-04-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-04/'
+PARTITION (saledate='2008-05-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-05/'
+PARTITION (saledate='2008-06-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-06/'
+PARTITION (saledate='2008-07-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-07/'
+PARTITION (saledate='2008-08-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-08/'
+PARTITION (saledate='2008-09-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-09/'
+PARTITION (saledate='2008-10-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-10/'
+PARTITION (saledate='2008-11-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-11/'
+PARTITION (saledate='2008-12-01') LOCATION 's3://id-redshift-uswest2/tickit/spectrum/sales_partition/saledate=2008-12/'
 ```
 
 이제 특정 salesdate를 사용하는 모든 쿼리에서 해당 날짜와 관련된 디렉터리만 스캔합니다.<br/>
@@ -276,9 +275,9 @@ PARTITION (saledate='2008-12-01') LOCATION 's3://id-redshift-apnortheast2/tickit
 파티션에 대한 정보는 SVV_EXTERNAL_PARTITIONS 시스템 뷰에서 확인할 수 있습니다.<br/>
 1. 다음의 명령을 실행하여 sales_partitioned 테이블에 대한 파티션을 확인합니다.
 ```
-    SELECT *
-    FROM SVV_EXTERNAL_PARTITIONS
-    WHERE tablename = 'sales_partitioned'
+SELECT *
+FROM SVV_EXTERNAL_PARTITIONS
+WHERE tablename = 'sales_partitioned'
 ```
 <br/>
 2. External tables에 대한 정보는 _SVV_EXTERNAL_COLOUMS 시스템 뷰에서 확인할 수 있습니다.<br/>
