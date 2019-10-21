@@ -228,42 +228,19 @@ salesdate 필드에 따라 테이블이 파티션됨을 Redshift Spectrum에 알
 다음 명령을 실행하여 파티션을 추가합니다.
 
 ```
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-01-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-01/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-02-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-02/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-03-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-03/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-04-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-04/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-05-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-05/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-06-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-06/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-07-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-07/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-08-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-08/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-09-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-09/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-10-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-10/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-11-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-11/';
-ALTER TABLE spectrum.sales_partitioned
-ADD PARTITION (saledate='2008-12-01')
-LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-12/';
+ALTER TABLE spectrum.sales_partitioned ADD 
+PARTITION (saledate='2008-01-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-01/'
+PARTITION (saledate='2008-02-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-02/'
+PARTITION (saledate='2008-03-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-03/'
+PARTITION (saledate='2008-04-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-04/'
+PARTITION (saledate='2008-05-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-05/'
+PARTITION (saledate='2008-06-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-06/'
+PARTITION (saledate='2008-07-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-07/'
+PARTITION (saledate='2008-08-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-08/'
+PARTITION (saledate='2008-09-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-09/'
+PARTITION (saledate='2008-10-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-10/'
+PARTITION (saledate='2008-11-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-11/'
+PARTITION (saledate='2008-12-01') LOCATION 's3://id-redshift-apnortheast2/tickit/spectrum/sales_partition/saledate=2008-12/'
 ```
 
 이제 특정 salesdate를 사용하는 모든 쿼리에서 해당 날짜와 관련된 디렉터리만 스캔합니다.<br/>
