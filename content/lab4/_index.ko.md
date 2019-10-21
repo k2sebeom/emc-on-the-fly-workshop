@@ -15,7 +15,7 @@ pre: "<b>6. </b>"
 ![image02](images/03.png)
 
 #### Amazon Redshift 클러스터 생성
-실습을 위하여 Redshift 클러스터를 생성합니다. 클러스터는 샘플 데이터가 있는 **ap-northeast-2 (Seoul)** 와 동일한 리전에 생성해야 합니다. 또한 Redshift 의 접속을 위하여 보안 그룹 설정을 주의하여 생성 하시기 바랍니다. <br/>
+실습을 위하여 Redshift 클러스터를 생성합니다. 클러스터는 샘플 데이터가 있는 **us-west-2 (오레곤)** 와 동일한 리전에 생성해야 합니다. 또한 Redshift 의 접속을 위하여 보안 그룹 설정을 주의하여 생성 하시기 바랍니다. <br/>
 
 1. AWS Management Console에서 **Redshift** 서비스에 접속 후 좌측 **Clusters** 탭을 선택 합니다.
 2. **Launch cluster** 버튼을 클릭하여 클러스터 생성을 시작합니다.
@@ -138,7 +138,7 @@ FROM 's3://id-redshift-apnortheast2/tickit/allevents_pipe.txt'
 IAM_ROLE 'INSERT-YOUR-REDSHIFT-ROLE'
 DELIMITER '|'
 TIMEFORMAT 'YYYY-MM-DD HH:MI:SS'
-REGION 'ap-northeast-2'
+REGION 'us-west-2'
 ```
 
 3. 다음 명령을 실행하여 event 데이터의 샘플을 확인합니다.

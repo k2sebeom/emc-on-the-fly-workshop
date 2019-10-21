@@ -4,7 +4,7 @@ weight: 20
 pre: "<b>2. </b>"
 ---
 
-000본격적인 Lab 시작에 앞서 구성에 필요한 IAM User, EC2, S3를 생성 및 구성합니다. Redshift 실습은 생략할 예정임으로 DBeaver는 설치하실 필요가 없습니다.<br/><br/>
+본격적인 Lab 시작에 앞서 구성에 필요한 IAM User, EC2, S3를 생성 및 구성합니다.<br/><br/>
 
 #### IAM User 생성
 Lab 전체에서 사용할 IAM User를 생성합니다.<br/>
@@ -109,12 +109,12 @@ ls /home/ssm-user/
 ```
 ![image6-3](images/6-3.png)
 
-7. AWS의 다른 리소스 접근을 위해 AWS Configure를 진행합니다. 이때 앞서 생성한 IAM User 데이터를 활용합니다. 이전에 다운로드 받은 .csv 파일을 열어 Access key ID와 Secret access key를 확인하고 입력합니다. region은 ap-northeast-2 로 입력 합니다.
+7. AWS의 다른 리소스 접근을 위해 AWS Configure를 진행합니다. 이때 앞서 생성한 IAM User 데이터를 활용합니다. 이전에 다운로드 받은 .csv 파일을 열어 Access key ID와 Secret access key를 확인하고 입력합니다. region은 us-west-2 로 입력 합니다.
 ``` markup
 aws configure
 AWS Access Key ID [None]: <Access key ID>
 AWS Secret Access Key [None]: <Secret access key>
-Default region name [None]: ap-northeast-2
+Default region name [None]: us-west-2
 Default output format [None]:
 ```
 ![image7-3](images/7-3.png)
@@ -137,7 +137,7 @@ aws configure list
 | &nbsp; | &nbsp; |
 | ------ | ------ |
 | Bucket name | bigdata-immersionday-**[개인식별자]** <br/> (예 : bigdata-immersionday-**foobar**) |
-| Region | Asia Pacific (Seoul) |
+| Region | 미국 서부 (오레곤) |
 | 그 외 | default |
 
 ---

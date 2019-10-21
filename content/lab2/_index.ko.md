@@ -50,7 +50,7 @@ AWS Glue는 완전관리형 ETL(Extract, Transform, Load) 엔진입니다. 실�
 ![image03](images/03.png)
 14. 크롤러 이름에 **TestCrawler** 입력 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 15. Crawler source type에 **Data stores** 를 선택 후, {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
-16. 크롤링 할 S3 버킷 및 폴더를 지정합니다. 포함 경로 에 **s3://bigdata-immersionday-{별명}/source** 을 입력하거나 탐색기 버튼을 클릭하여 **bigdata-immersionday-{별명}** 버킷 아래 **source** 폴더를 {{% button href="#" %}}선택{{% /button %}} 한 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
+16. 크롤링 할 S3 버킷 및 폴더를 지정합니다. 포함 경로 에 **s3://bigdata-immersionday-[개인식별자]/source** 을 입력하거나 탐색기 버튼을 클릭하여 **bigdata-immersionday-[개인식별자]** 버킷 아래 **source** 폴더를 {{% button href="#" %}}선택{{% /button %}} 한 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 17. 다른 데이터 스토어 추가는 **아니요**를 선택하고 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 18. **IAM 역할 선택** 화면에서 **기존 IAM 역할 선택**을 선택하고 앞서 생성한 **GlueRole**을 선택한 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 19. 크롤러는 온디맨드 방식으로도 실행할 수 있고, 배치 방식으로도 실행할 수 있습니다. 실습에서는 온디맨드 방식으로 실행합니다. 빈도는 **온디맨드 실행**을 선택하고 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
@@ -61,26 +61,26 @@ AWS Glue는 완전관리형 ETL(Extract, Transform, Load) 엔진입니다. 실�
 23. 크롤러는 S3에 저장된 파일을 분석하고 테이블을 생성합니다. 크롤링이 끝난 후 테이블 1개 (테이블명 : **source**)가 생성되었음을 확인합니다.
 ![image05](images/05.png)
 24. **데이터베이스** > **테이블** 에서 방금 생성된 **source** 테이블을 클릭하여 테이블 구조를 확인합니다.
-25. Kinesis Firehose가 **s3://bigdata-immersionday-{별명}/source** 에 저장한 JSON 파일 포맷 스트림 데이터를 Parquet 파일 포맷으로 변경하고, 일부 컬럼의 데이터 타입을 변경한 후 **s3://bigdata-immersionday-{별명}/parquet** 폴더에 파일을 저장하는 Glue ETL 작업을 생성하겠습니다.
-26. 우선 ETL후 결과 파일이 저장될 폴더를 생성합니다. S3 콘솔로 로그인한 후 **bigdata-immersionday-{별명}** 버킷를 선택하고 **parquet** 폴더를 생성합니다.
+25. Kinesis Firehose가 **s3://bigdata-immersionday-[개인식별자]/source** 에 저장한 JSON 파일 포맷 스트림 데이터를 Parquet 파일 포맷으로 변경하고, 일부 컬럼의 데이터 타입을 변경한 후 **s3://bigdata-immersionday-[개인식별자]/parquet** 폴더에 파일을 저장하는 Glue ETL 작업을 생성하겠습니다.
+26. 우선 ETL후 결과 파일이 저장될 폴더를 생성합니다. S3 콘솔로 로그인한 후 **bigdata-immersionday-[개인식별자]** 버킷를 선택하고 **parquet** 폴더를 생성합니다.
 ![image06](images/06.png)
 27. Glue 콘솔(https://console.aws.amazon.com/glue) 에서 **ETL** > **작업**을 선택한 후 {{% button href="#" %}}작업 추가{{% /button %}} 를 클릭합니다.
 28. **작업 속성 구성** 화면에서 **이름**은 **TestJob**을 입력하고, IAM 역할은 앞서 생성한 **GlueRole**을 선택합니다. **고급 속성** 에서 **작업 북마크**를 **활성화**하여 Glue가 마지막으로 처리한 데이터를 기억하게 합니다. {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 29. **데이터 원본 선택** 화면에서 **source**를 선택하고 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 ![image07](images/07.png)
-30. **데이터 대상 선택** 화면에서 **데이터 대상에서 테이블 생성**을 선택하고 **데이터 스토어**는 **Amazon S3**, **형식**은 **Parquet**, **대상 경로**는 **s3://bigdata-immersionday-{별명}/parquet** 을 입력합니다. {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
+30. **데이터 대상 선택** 화면에서 **데이터 대상에서 테이블 생성**을 선택하고 **데이터 스토어**는 **Amazon S3**, **형식**은 **Parquet**, **대상 경로**는 **s3://bigdata-immersionday-[개인식별자]/parquet** 을 입력합니다. {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 ![image08](images/08.png)
 31. **occurencestartdate**, **discoverydate** 컬럼의 데이터 형식을 date로 변경한 후 {{% button href="#" %}}작업 저장 및 스크립트 편집{{% /button %}} 을 클릭합니다.
 ![image09](images/09.png)
 32. 스크립트 내용을 검토한 후 상단의 {{% button href="#" %}}작업 실행{{% /button %}} 버튼을 클릭하여 ETL을 시작합니다. 작업 완료까지 수 분이 소요될 수 있습니다.
-33. Glue ETL 작업이 끝나면 **s3://bigdata-immersionday-{별명}/parquet** 폴더에 **parquet** 타입 파일이 생성됩니다.
+33. Glue ETL 작업이 끝나면 **s3://bigdata-immersionday-[개인식별자]/parquet** 폴더에 **parquet** 타입 파일이 생성됩니다.
 34. Glue ETL이 변환한 Parquet 파일을 크롤링하여 테이블을 생성합니다. **AWS Glue** > **크롤러** > **TestCrawler**를 선택하고 **작업** > **크롤러 편집** 를 선택합니다.
 ![image10](images/10.png)
 35. **크롤러 정보 추가** 화면에서 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 36. **Specify crawler source type** 화면에서 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 37. **데이터 스토어 추가** 화면에서 {{% button href="#" %}}다음{{% /button %}} 을 를 클릭합니다.
 38. **다른 데이터 스토어 추가** 화면에서 **예**를 선택한 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
-39. **데이터 스토어 추가** 화면에서 포함 경로에 **s3://bigdata-immersionday-{별명}/parquet** 을 입력한 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
+39. **데이터 스토어 추가** 화면에서 포함 경로에 **s3://bigdata-immersionday-[개인식별자]/parquet** 을 입력한 후 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 ![image11](images/11.png)
 40. **다른 데이터 스토어 추가** 화면에서 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
 41. **IAM 역할 선택** 화면에서 {{% button href="#" %}}다음{{% /button %}} 을 클릭합니다.
@@ -98,7 +98,7 @@ AWS Glue는 완전관리형 ETL(Extract, Transform, Load) 엔진입니다. 실�
 2. Athena 콘솔이 열리면, {{% button href="#" %}}시작하기{{% /button %}} 를 클릭합니다.
 3. set up a query result location in Amazon S3 를 클릭합니다.
 ![image32](images/32.png)
-4. 쿼리 결과 위치에 **s3://bigdata-immersionday-{별명}/query-result/** 를 입력하고 {{% button href="#" %}}저장{{% /button %}} 을 클릭합니다.
+4. 쿼리 결과 위치에 **s3://bigdata-immersionday-[개인식별자]/query-result/** 를 입력하고 {{% button href="#" %}}저장{{% /button %}} 을 클릭합니다.
 ![image33](images/33.png)
 5. 다시 Glue 크롤러가 만든 **parquet** 테이블을 클릭하고 **작업** > **데이터 보기**를 클릭합니다.
 6. Athena 콘솔이 열리고 아래 쿼리가 수행되었습니다.
@@ -121,7 +121,7 @@ ORDER BY region;
 2. QuickSight에 가입하기 위해 {{% button href="#" %}}Sign up for QuickSight{{% /button %}} 버튼을 클릭합니다.
 ![image17](images/17.png)
 3. **Standard** 에디션을 선택한 후 {{% button href="#" %}}계속{{% /button %}}버튼을 클릭합니다.
-4. **QuickSight 리전**은 **Asia Pacific (Seoul)**을 선택하고 **QuickSight 계정 이름**은 **임의로 지정(중복될 경우 계정이 생성되지 않습니다)** 하고 **알림 이메일 주소**는 개인 Email 주소를 입력합니다. QuckSight가 S3에 접근해야 하므로, **Choose S3 buckets**를 클릭하여 **bigdata-immersionday-{별명}** 을 선택한 후 {{% button href="#" %}}완료{{% /button %}} 를 클릭합니다.
+4. **QuickSight 리전**은 **Asia Pacific (Seoul)**을 선택하고 **QuickSight 계정 이름**은 **임의로 지정(중복될 경우 계정이 생성되지 않습니다)** 하고 **알림 이메일 주소**는 개인 Email 주소를 입력합니다. QuckSight가 S3에 접근해야 하므로, **Choose S3 buckets**를 클릭하여 **bigdata-immersionday-[개인식별자]** 을 선택한 후 {{% button href="#" %}}완료{{% /button %}} 를 클릭합니다.
 ![image18](images/18.png)
 5. 계정이 생성된 후 {{% button href="#" %}}Amazon QuickSight로 이동{{% /button %}} 버튼을 클릭합니다.
 6. 좌측 상단 {{% button href="#" %}}새 분석{{% /button %}} 을 클릭합니다.
