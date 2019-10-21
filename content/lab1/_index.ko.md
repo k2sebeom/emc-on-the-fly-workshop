@@ -13,7 +13,7 @@ pre: "<b>3. </b>"
 #### Kinesis Firehose 생성 (원본 데이터)
 Kinesis Firehose를 통해 앞서 생성한 EC2가 발생시키는 실시간 데이터를 S3, Redshift, ElasticSearch 등의 목적지에 수집할 수 있습니다.<br/>
 
-1. AWS Management Console에서 **Kinesis** 서비스를 선택합니다. (Region : N.Virginia)
+1. AWS Management Console에서 **Kinesis** 서비스를 선택합니다. (Region : Seoul)
 2. **Get Started** 버튼을 클릭합니다.
 3. **Deliver streaming data with Kinesis Firehose delivery streams** 메뉴의 **Create delivery stream** 을 클릭하여 새로운 Firehose 전송 스트림 생성을 시작합니다.
 ![image02](images/02.png)
@@ -37,11 +37,11 @@ Kinesis Firehose를 통해 앞서 생성한 EC2가 발생시키는 실시간 데
 #### 데이터 수집 확인
 생성한 Firehose가 정상적으로 데이터를 수집하는지 확인해봅니다.<br/>
 
-1. 앞서 생성한 EC2 인스턴스에 SSH 접속을 합니다.
+1. 앞서 생성한 EC2 인스턴스에 system manager - session manager로 접속을 합니다.
 2. firehose.py 를 실행합니다.
 
 ``` markup
-python firehose.py
+python /home/ssm-user/firehose.py
 ```
 
 3. 매 초 데이터가 발생하는 것을 확인합니다. 충분한 데이터 수집을 위해 실행 중인 상태로 다음 단계를 진행합니다.

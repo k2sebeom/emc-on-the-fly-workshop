@@ -4,7 +4,7 @@ weight: 20
 pre: "<b>2. </b>"
 ---
 
-본격적인 Lab 시작에 앞서 구성에 필요한 IAM User, EC2, S3를 생성 및 구성합니다. Redshift 실습은 생략할 예정임으로 DBeaver는 설치하실 필요가 없습니다.<br/><br/>
+000본격적인 Lab 시작에 앞서 구성에 필요한 IAM User, EC2, S3를 생성 및 구성합니다. Redshift 실습은 생략할 예정임으로 DBeaver는 설치하실 필요가 없습니다.<br/><br/>
 
 #### IAM User 생성
 Lab 전체에서 사용할 IAM User를 생성합니다.<br/>
@@ -23,6 +23,20 @@ Lab 전체에서 사용할 IAM User를 생성합니다.<br/>
 7. **Download.csv** 버튼을 클릭하여 생성한 사용자의 정보를 다운 받습니다. EC2 설정에 꼭 필요한 파일이므로 기억하기 쉬운 위치에 저장합니다.
 ![image06](images/06.png)
 
+8. AWS Management Console에 로그인 한 뒤 **IAM** 서비스에 접속합니다.
+9. 왼쪽 메뉴에서 **Roles**를 선택합니다. 상단의 **Create role** 버튼 클릭하여 role 생성 page로 들어갑니다.
+![image9-1](images/9-1.png)
+10. AWS service 선택, EC2 service 를 선택 합니다. **Next: Permissions**를 선택합니다.
+![image10-1](images/10-1.png)
+11. Filter에 "SSM" 을 입력하고, **AmazonEC2RoleforSSM**를 선택합니다. Next:Tags 버튼을 클릭해서 tags 입력 부분으로 들어가서, Next:Review 버튼을 클릭합니다.
+![image11-1](images/11-1.png)
+12. Role name에는 **EC2RoleforSSM**을 입력하고, **Create role** 버튼을 클릭합니다. 
+![image12-1](images/12-1.png)
+
+
+
+
+
 #### EC2 생성
 Lab에서 데이터를 실시간으로 발생시킬 EC2 인스턴스를 생성합니다.<br/>
 
@@ -34,16 +48,18 @@ Lab에서 데이터를 실시간으로 발생시킬 EC2 인스턴스를 생성�
 ![image08](images/08.png)
 5. **Step 2 : Choose an Instance Type** 화면에서 인스턴스 타입은 **t2.micro**를 선택합니다. **Next: Configure Instance Details** 을 클릭합니다.
 ![image09](images/09.png)
-6. **Step 3: Configure Instance Details** 화면에서 **Advanced Details**을 클릭하고 아래 **userdata**를 복사하여 붙여 넣습니다.
+6. **Step 3: Configure Instance Details** 화면에서 **IAM role**에서 미리 생성한 **EC2RoleforSSM**을 선택 합니다.
+![image7-2](images/7-2.png)
+7. **Step 3: Configure Instance Details** 화면에서 **Advanced Details**을 클릭하고 아래 **userdata**를 복사하여 붙여 넣습니다.
 ``` markup
 #include
 https://s3.amazonaws.com/immersionday-bigdata-v20180731/userdata.sh
 ```
 ![image10](images/10.png)
-7. **Step 4: Add Storage** 화면에서 기본값을 그대로 두고 **Next: Add Tags**를 클릭합니다.
-8. **Step 5: Add Tags** 화면에서 **Add Tag** 버튼을 한 번 클릭한 뒤, **Key/Value** : **Name/BigDataStream** 를 입력하고 **Next: Configure Security Group** 을 클릭합니다.
+8. **Step 4: Add Storage** 화면에서 기본값을 그대로 두고 **Next: Add Tags**를 클릭합니다.
+9. **Step 5: Add Tags** 화면에서 **Add Tag** 버튼을 한 번 클릭한 뒤, **Key/Value** : **Name/BigDataStream** 를 입력하고 **Next: Configure Security Group** 을 클릭합니다.
 ![image11](images/11.png)
-9. **Step 6: Configure Security Group** 화면에서 **Security Group에 필요한 정보를 입력**한 후 **Review and Launch**를 클릭합니다.
+10. **Step 6: Configure Security Group** 화면에서 **Security Group에 필요한 정보를 입력**한 후 **Review and Launch**를 클릭합니다.
     * Security Group Name : bastion
     * Description : SG for bastion
     * Type : SSH
@@ -51,43 +67,66 @@ https://s3.amazonaws.com/immersionday-bigdata-v20180731/userdata.sh
     * Port Range : 22
     * Source : 0.0.0.0/0
 ![image12](images/12.png)
-10. **Step 7: Review Instance Launch** 화면에서 **Launch**를 클릭합니다.
-11. EC2 Instance에 접속하기 위한 Key pair를 생성합니다. **Create a new key pair**를 선택하고 **Key pair name**은 **bigdata-hol** 을 입력한 후 **Download Key Pair**를 클릭합니다.
+11. **Step 7: Review Instance Launch** 화면에서 **Launch**를 클릭합니다.
+12. EC2 Instance에 접속하기 위한 Key pair를 생성합니다. **Create a new key pair**를 선택하고 **Key pair name**은 **bigdata-hol** 을 입력한 후 **Download Key Pair**를 클릭합니다.
 ![image13](images/13.png)
-12. **Key Pair**를 **PC의 임의 위치에 저장**한 후 **Launch Instances**를 클릭합니다. (인스턴스 기동에 몇 분이 소요될 수 있습니다.)
+13. **Key Pair**를 **PC의 임의 위치에 저장**한 후 **Launch Instances**를 클릭합니다. (인스턴스 기동에 몇 분이 소요될 수 있습니다.)
 ![image14](images/14.png)
-13. (MacOS 사용자) 다운로드 받은 **Key Pair 파일의 File Permission**을 **400**으로 변경합니다.
+14. (MacOS 사용자) 다운로드 받은 **Key Pair 파일의 File Permission**을 **400**으로 변경합니다.
 ``` markup
 $ chmod 400 ./bigdata-hol.pem
 $ ls -lat bigdata-hol.pem
 -r-------- 1 ****** ****** 1692 Jun 25 11:49 bigdata-hol.pem
 ```
 
-#### EC2 설정
+
+
+
+#### EC2 설정 - System manager (seesion manager를 통해 ec2 ssh 접속)
 생성한 EC2 인스턴스가 다른 AWS 리소스에 접근 및 제어할 수 있도록 다음과 같이 구성합니다.<br/>
 
-1. 생성한 인스턴스의 Public IP로 SSH 접속을 합니다.
+1. AWS Management Console에서 **Systems Manager** 서비스에 접속합니다.
+2. 왼쪽 하단의 **Session Manager** 를 선택 합니다. 
+![image2-3](images/2-3.png)
+3. Session manager console에서 **Start session** 버튼을 클릭합니다.
+![image2-4](images/2-4.png)
+4. 앞에서 생성한 BigDataStream instance를 선택하고, 하단의 **Start session** 버튼을 클릭합니다.
+![image4-3](images/4-3.png)
+5. instance session에 들어가서 /home/ec2-user/ 에 있는 3개의 files을 /home/ssm-user/ 로 copy 합니다. 
+
 ``` markup
-ssh -i “<Key pair name>" ec2-user@<Public IP>
+sudo cp /home/ec2-user/redshift.py /home/ssm-user/
+
+sudo cp /home/ec2-user/firehose.py /home/ssm-user/
+
+sudo cp /home/ec2-user/banking_loss.csv /home/ssm-user/
 ```
-![image15](images/15.png)
-**&nbsp;* Windows OS를 사용하시는 경우 Putty를 이용하여 접속합니다.**
-2. User Data를 통해 3가지 파일(banking_loss.csv, firehose.py, redshift.py)이 잘 다운로드 받아졌는지 확인합니다.
+![image5-3](images/5-3.png)
+
+6. User Data를 통해 3가지 파일(banking_loss.csv, firehose.py, redshift.py)이 잘 다운로드 받아졌는지 확인합니다.
 ``` markup
-ls
+ls /home/ssm-user/
 ```
-![image16](images/16.png)
-3. AWS의 다른 리소스 접근을 위해 AWS Configure를 진행합니다. 이때 앞서 생성한 IAM User 데이터를 활용합니다. 이전에 다운로드 받은 .csv 파일을 열어 Access key ID와 Secret access key를 확인하고 입력합니다.
+![image6-3](images/6-3.png)
+
+7. AWS의 다른 리소스 접근을 위해 AWS Configure를 진행합니다. 이때 앞서 생성한 IAM User 데이터를 활용합니다. 이전에 다운로드 받은 .csv 파일을 열어 Access key ID와 Secret access key를 확인하고 입력합니다. region은 ap-northeast-2 로 입력 합니다.
 ``` markup
 aws configure
 AWS Access Key ID [None]: <Access key ID>
 AWS Secret Access Key [None]: <Secret access key>
-Default region name [None]: us-east-1
+Default region name [None]: ap-northeast-2
 Default output format [None]:
 ```
-![image17](images/17.png)
-4. 설정이 완료 되었다면 다음과 같이 입력하신 정보가 마스킹 되어 보이게 됩니다.
-![image18](images/18.png)
+![image7-3](images/7-3.png)
+
+8. 설정이 완료 되었다면, aws configure list 로 다음과 같이 입력하신 정보가 마스킹 되어 보이게 됩니다.
+``` markup
+aws configure list
+```
+![image8-3](images/8-3.png)
+
+
+
 
 #### S3 Bucket 생성
 발생한 실시간 데이터를 저장할 S3 Bucket을 생성합니다.<br/>
@@ -98,7 +137,7 @@ Default output format [None]:
 | &nbsp; | &nbsp; |
 | ------ | ------ |
 | Bucket name | bigdata-immersionday-**[개인식별자]** <br/> (예 : bigdata-immersionday-**foobar**) |
-| Region | US East (N. Virginia) |
+| Region | Asia Pacific (Seoul) |
 | 그 외 | default |
 
 ---

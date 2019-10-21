@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.58.3" />
+    <meta name="description" content="AWS Analytics Services Workshop">
+<meta name="author" content="Inhwan Hwang">
+
+    <link rel="icon" href="/analytics201/images/favicon.png" type="image/png">
+
+    <title>소개 :: AWS Analytics 서비스 워크샵</title>
+
+    
+    <link href="/analytics201/css/nucleus.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/fontawesome-all.min.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/hybrid.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/featherlight.min.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/perfect-scrollbar.min.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/auto-complete.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/atom-one-dark-reasonable.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/theme.css?1571384333" rel="stylesheet">
+    <link href="/analytics201/css/hugo-theme.css?1571384333" rel="stylesheet">
+    
+      <link href="/analytics201/css/theme-aws.css?1571384333" rel="stylesheet">
+    
+
+    <script src="/analytics201/js/jquery-3.3.1.min.js?1571384333"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/analytics201/intro/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/analytics201">
+	<img src="/analytics201/images/logo.png" height="70px"/>
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/analytics201/js/lunr.min.js?1571384333"></script>
+<script type="text/javascript" src="/analytics201/js/auto-complete.js?1571384333"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/analytics201\/";
+    
+</script>
+<script type="text/javascript" src="/analytics201/js/search.js?1571384333"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/intro/" title="소개" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/analytics201/intro/">
+          <b>1. </b>소개
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab0/" title="실습0. 사전 준비" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab0/">
+          <b>2. </b>실습0. 사전 준비
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab1/" title="실습1. Kinesis로 S3에 데이터 수집" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab1/">
+          <b>3. </b>실습1. Kinesis로 S3에 데이터 수집
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab2/" title="실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab2/">
+          <b>4. </b>실습2. Glue, Athena, Quicksight로 수집한 S3의 데이터 분석
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab3/" title="실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab3/">
+          <b>5. </b>실습3. EMR을 이용한 Hadoop 클러스터 구성 및 데이터 분석
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/analytics201/lab4/" title="실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/analytics201/lab4/">
+          <b>6. </b>실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="/analytics201/credits/"><i class='fas fa-fw fa-bullhorn'></i> 크레딧</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> </a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      © 2019 Amazon Web Services, Inc. or its Affiliates. All rights reserved.
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/analytics201/'>홈</a> > 소개
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#준비사항">준비사항</a></li>
+<li><a href="#contact-us">Contact Us</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              소개
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<p>이 워크샵을 통해 AWS 기반의 데이터 분석을 실습합니다.<br/><br/></p>
+
+<h4 id="준비사항">준비사항</h4>
+
+<ul>
+<li>AWS 계정: EC2, S3, IAM, Kinesis(Data Analytics, Data Firehose), Glue, Athena, QuickSight, Redshift 자원을 생성할 수 있는 권한이 필요합니다.<br/></li>
+<li>AWS 리전: 이번 실습은 서울 (ap-northeast-2) 리전에서 실행합니다.<br/></li>
+<li>브라우저: 최신 버전의 크롬, 파이어폭스를 사용하세요.<br/><br/></li>
+</ul>
+
+<h4 id="contact-us">Contact Us</h4>
+
+<p>AWS 서비스에 관한 질문은 AWS Support나 담당 AM을 통해서 문의해 주시고 본 워크샵의 발표자료에 관한 질문 사항은 아래의 email 링크를 통해 문의해 주시면 감사하겠습니다.<br/><br/></p>
+
+<hr />
+
+<p align="center">
+© 2019 Amazon Web Services, Inc. 또는 자회사, All rights reserved.
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/analytics201/" title="홈"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/analytics201/lab0/" title="실습0. 사전 준비" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/analytics201/js/clipboard.min.js?1571384333"></script>
+    <script src="/analytics201/js/perfect-scrollbar.min.js?1571384333"></script>
+    <script src="/analytics201/js/perfect-scrollbar.jquery.min.js?1571384333"></script>
+    <script src="/analytics201/js/jquery.sticky.js?1571384333"></script>
+    <script src="/analytics201/js/featherlight.min.js?1571384333"></script>
+    <script src="/analytics201/js/highlight.pack.js?1571384333"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/analytics201/js/modernizr.custom-3.6.0.js?1571384333"></script>
+    <script src="/analytics201/js/learn.js?1571384333"></script>
+    <script src="/analytics201/js/hugo-learn.js?1571384333"></script>
+
+    <link href="/analytics201/mermaid/mermaid.css?1571384333" rel="stylesheet" />
+    <script src="/analytics201/mermaid/mermaid.js?1571384333"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+  </body>
+</html>
