@@ -41,7 +41,7 @@ Lab 전체에서 사용할 IAM User를 생성합니다.<br/>
 Lab에서 데이터를 실시간으로 발생시킬 EC2 인스턴스를 생성합니다.<br/>
 
 1. AWS Management Console에서 **EC2** 서비스에 접속합니다.
-2. 우측 상단에서 Region은 **US East (N. Virginia)**를 선택합니다.
+2. 우측 상단에서 Region은 **US West (Oregon)**를 선택합니다.
 3. **Launch Instance**를 선택하여 새로운 인스턴스 생성을 시작합니다.
 ![image07](images/07.png)
 4. **Step 1: Choose an Amazon Machine Image (AMI)** 화면에서 **Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - ami-14c5486b** 를 선택합니다.
@@ -136,7 +136,7 @@ aws configure list
 
 | &nbsp; | &nbsp; |
 | ------ | ------ |
-| Bucket name | analytics-immersionday-**[개인식별자]** <br/> (예 : analytics-immersionday-**foobar**) |
+| Bucket name | analytics-workshop-**[개인식별자]** <br/> (예 : analytics-workshop-**foobar**) |
 | Region | 미국 서부 (오레곤) |
 | 그 외 | default |
 
