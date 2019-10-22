@@ -57,7 +57,7 @@ https://s3.amazonaws.com/immersionday-bigdata-v20180731/userdata.sh
 ```
 ![image10](images/10.png)
 8. **Step 4: Add Storage** 화면에서 기본값을 그대로 두고 **Next: Add Tags**를 클릭합니다.
-9. **Step 5: Add Tags** 화면에서 **Add Tag** 버튼을 한 번 클릭한 뒤, **Key/Value** : **Name/BigDataStream** 를 입력하고 **Next: Configure Security Group** 을 클릭합니다.
+9. **Step 5: Add Tags** 화면에서 **Add Tag** 버튼을 한 번 클릭한 뒤, **Key/Value** : **Name/AnalyticsStream** 를 입력하고 **Next: Configure Security Group** 을 클릭합니다.
 ![image11](images/11.png)
 10. **Step 6: Configure Security Group** 화면에서 **Security Group에 필요한 정보를 입력**한 후 **Review and Launch**를 클릭합니다.
     * Security Group Name : bastion
@@ -68,15 +68,15 @@ https://s3.amazonaws.com/immersionday-bigdata-v20180731/userdata.sh
     * Source : 0.0.0.0/0
 ![image12](images/12.png)
 11. **Step 7: Review Instance Launch** 화면에서 **Launch**를 클릭합니다.
-12. EC2 Instance에 접속하기 위한 Key pair를 생성합니다. **Create a new key pair**를 선택하고 **Key pair name**은 **bigdata-hol** 을 입력한 후 **Download Key Pair**를 클릭합니다.
+12. EC2 Instance에 접속하기 위한 Key pair를 생성합니다. **Create a new key pair**를 선택하고 **Key pair name**은 **analytics-hol** 을 입력한 후 **Download Key Pair**를 클릭합니다.
 ![image13](images/13.png)
 13. **Key Pair**를 **PC의 임의 위치에 저장**한 후 **Launch Instances**를 클릭합니다. (인스턴스 기동에 몇 분이 소요될 수 있습니다.)
 ![image14](images/14.png)
 14. (MacOS 사용자) 다운로드 받은 **Key Pair 파일의 File Permission**을 **400**으로 변경합니다.
 ``` markup
-$ chmod 400 ./bigdata-hol.pem
-$ ls -lat bigdata-hol.pem
--r-------- 1 ****** ****** 1692 Jun 25 11:49 bigdata-hol.pem
+$ chmod 400 ./analytics-hol.pem
+$ ls -lat analytics-hol.pem
+-r-------- 1 ****** ****** 1692 Jun 25 11:49 analytics-hol.pem
 ```
 
 
@@ -90,7 +90,7 @@ $ ls -lat bigdata-hol.pem
 ![image2-3](images/2-3.png)
 3. Session manager console에서 **Start session** 버튼을 클릭합니다.
 ![image2-4](images/2-4.png)
-4. 앞에서 생성한 BigDataStream instance를 선택하고, 하단의 **Start session** 버튼을 클릭합니다.
+4. 앞에서 생성한 AnalyticsStream instance를 선택하고, 하단의 **Start session** 버튼을 클릭합니다.
 ![image4-3](images/4-3.png)
 5. instance session에 들어가서 /home/ec2-user/ 에 있는 3개의 files을 /home/ssm-user/ 로 copy 합니다. 
 
@@ -136,7 +136,7 @@ aws configure list
 
 | &nbsp; | &nbsp; |
 | ------ | ------ |
-| Bucket name | bigdata-immersionday-**[개인식별자]** <br/> (예 : bigdata-immersionday-**foobar**) |
+| Bucket name | analytics-immersionday-**[개인식별자]** <br/> (예 : analytics-immersionday-**foobar**) |
 | Region | 미국 서부 (오레곤) |
 | 그 외 | default |
 
