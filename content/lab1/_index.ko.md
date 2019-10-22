@@ -81,8 +81,7 @@ Kinesis Analytics를 활용하여 스트리밍 데이터를 처리할 applicatio
 ![image20](images/20.png)
 4. **OccurrenceStartDate**와 **DiscoveryDate**의 타입을 **DATE**로 변경해줍니다. **NetLoss**, **RecoveryAmount**, **EstimatedGrossLoss**는 **DOUBLE**로 변경해줍니다. **Save schema and update stream samples** 버튼을 클릭하여 저장합니다.
 ![image21](images/21.png)
-5. 저장이 완료되면 **Exit(done)** 버튼을 클릭한 뒤, **Save and continue** 버튼을 클릭하여 Source 지정을 완료합니다.
-![image22](images/22.png)
+5. 저장이 완료되면 **Exit(done)** 버튼을 클릭하여 Source 지정을 완료합니다.
 
 #### Kinesis Analytics Application - SQL 실시간 쿼리
 1. **Go to SQL editor** 메뉴로 이동합니다.
