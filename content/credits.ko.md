@@ -3,22 +3,20 @@ title: 크레딧
 disableToc: true
 ---
 
-## 컨텐츠 기여자
+## 컨텐츠 최초제작 기여자
 + AWS CS Korea SA
-    - hyouk@
-    - kseongmo@
-    - sehyul@
-    - inhwan@
-    - seokjae@
-    - donghyun@
-    - jungwons@
+    - anhyobin@
+
+## 컨텐츠 업데이트 기여자
++ AWS CS Korea SA
+    - hyouk@ &nbsp; kseongmo@ &nbsp; sehyul@
+
++ AWS WWPS Korea SA
+    - inhwan@ &nbsp; seokjae@ &nbsp; donghyun@ &nbsp; jungwons@
 
 ## 컨텐츠 웹 변환 기여자
 + AWS WWPS Korea SA
-    - inhwan@
-    - seokjae@
-    - donghyun@
-    - jungwons@
+    - inhwan@ &nbsp; seokjae@ &nbsp; donghyun@ &nbsp; jungwons@
 
 ## 소프트웨어 기여자
 오픈 소스 소프트웨어를 더 좋게 만들어 주시는 기여자 분들<i class="fas fa-heart"></i>께 감사드립니다!

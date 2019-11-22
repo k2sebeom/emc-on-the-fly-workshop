@@ -1,5 +1,5 @@
 ---
-title: 실습3. AWS 기반 데이터 웨어하우징 - Amazon Redshift
+title: 실습4. AWS 기반 데이터 웨어하우징 - Amazon Redshift
 weight: 60
 pre: "<b>5. </b>"
 ---
