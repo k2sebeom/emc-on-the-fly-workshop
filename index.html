@@ -1,0 +1,140 @@
+<!doctype html><html lang=ko class="js csstransforms3d">
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=generator content="Hugo 0.92.2">
+<meta name=description content="AWS DeepLens 와  Amazon Rekognition 을 이용한 얼굴 인식 기기 만들기">
+<meta name=author content="SeBeom Lee">
+<link rel=icon href=/images/favicon.png type=image/png>
+<title>Elemental MediaConvert 를 이용한 On-the-Fly HLS 배포 :: AWS DeepLens를 이용한 얼굴 인식 기기 만들기</title>
+<link href=/css/nucleus.css?1645412974 rel=stylesheet>
+<link href=/css/fontawesome-all.min.css?1645412974 rel=stylesheet>
+<link href=/css/hybrid.css?1645412974 rel=stylesheet>
+<link href=/css/featherlight.min.css?1645412974 rel=stylesheet>
+<link href=/css/perfect-scrollbar.min.css?1645412974 rel=stylesheet>
+<link href=/css/auto-complete.css?1645412974 rel=stylesheet>
+<link href=/css/atom-one-dark-reasonable.css?1645412974 rel=stylesheet>
+<link href=/css/theme.css?1645412974 rel=stylesheet>
+<link href=/css/hugo-theme.css?1645412974 rel=stylesheet>
+<link href=/css/theme-aws.css?1645412974 rel=stylesheet>
+<script src=/js/jquery-3.3.1.min.js?1645412974></script>
+<style>:root #header+#content>#left>#rlblock_left{display:none!important}</style>
+</head>
+<body data-url=/>
+<nav id=sidebar class=showVisitedLinks>
+<div id=header-wrapper>
+<div id=header>
+<a id=logo href=/>
+<img src=/images/logo.png height=70px>
+</a>
+</div>
+<div class=searchbox>
+<label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder>
+<span data-search-clear><i class="fas fa-times"></i></span>
+</div>
+<script type=text/javascript src=/js/lunr.min.js?1645412974></script>
+<script type=text/javascript src=/js/auto-complete.js?1645412974></script>
+<script type=text/javascript>var baseurl="/"</script>
+<script type=text/javascript src=/js/search.js?1645412974></script>
+</div>
+<div class=highlightable>
+<ul class=topics>
+<li data-nav-id=/lab0/ title="S3 버킷 생성하기" class=dd-item>
+<a href=/lab0/>
+<b>1. </b>S3 버킷 생성하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab1/ title="Elemental MediaConvert 설정하기" class=dd-item>
+<a href=/lab1/>
+<b>2. </b>Elemental MediaConvert 설정하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab2/ title="Lambda 함수 설정하기" class=dd-item>
+<a href=/lab2/>
+<b>3. </b>Lambda 함수 설정하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab3/ title="CloudFront 배포 설정하기" class=dd-item>
+<a href=/lab3/>
+<b>4. </b>CloudFront 배포 설정하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab4/ title="On the Fly 로 HLS 시청하기" class=dd-item>
+<a href=/lab4/>
+<b>5. </b>On the Fly 로 HLS 시청하기
+<i class="fas fa-check read-icon"></i>
+</a>
+<ul>
+<li data-nav-id=/lab4/lab4-1/ title="On the Fly 로 HLS 시청하기 (기본)" class=dd-item>
+<a href=/lab4/lab4-1/>
+<b>5-1. </b>On the Fly 로 HLS 시청하기 (기본)
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<section id=shortcuts>
+<h3></h3>
+<ul>
+<li>
+<a class=padding href=/credits/><i class="fas fa-fw fa-bullhorn"></i> 크레딧</a>
+</li>
+</ul>
+</section>
+<section id=prefooter>
+<hr>
+<ul>
+<li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> </a></li>
+</ul>
+</section>
+<section id=footer>
+© 2020 Amazon Web Services, Inc. or its Affiliates. All rights reserved.
+</section>
+</div>
+</nav>
+<section id=body>
+<div id=overlay></div>
+<div class="padding highlightable">
+<div id=head-tags>
+</div>
+<div id=chapter>
+<div id=body-inner>
+<span id=sidebar-toggle-span>
+<a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i> navigation</a>
+</span>
+<h1 id=elemental-mediaconvert-를-이용한-on-the-fly-hls-배포>Elemental MediaConvert 를 이용한 On-the-Fly HLS 배포</h1>
+<hr>
+<p><img src=/static/diagram.png alt=Diagram></p>
+<p>Elemental MediaConvert 는 비디오를 다양한 포맷으로 변환할 수 있는 서비스입니다. MediaConvert 의 주 사용 목적 중 하나는 업로드한 비디오를 HLS 형식으로 변환하여 이후에 VOD로 제공하기 위한 것입니다. 하지만, 길이가 긴 비디오를 업로드 하였을 경우, 변환에 긴 시간이 걸리기 때문에, 변환 작업이 진행되는 중에 HLS 비디오를 시청하고 싶을 수 있습니다. 이 워크샵에서는 On-the-Fly 로 Elemental MediaConvert 를 이용하여 변환이 진행되는 동안 영상을 시청할 수 있는 간단한 아키텍쳐를 구성해 보고, ABR 기능을 이용하여 사용자의 네트워크 환경에 따라 적합한 해상도의 영상을 송출할 수 있게 하는 설정을 구성하게 됩니다.</p>
+<hr>
+</div>
+</div>
+</div>
+<div id=navigation>
+<a class="nav nav-next" href=/lab0/ title="S3 버킷 생성하기" style=margin-right:0><i class="fa fa-chevron-right"></i></a>
+</div>
+</section>
+<div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
+<div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
+</div>
+<script src=/js/clipboard.min.js?1645412974></script>
+<script src=/js/perfect-scrollbar.min.js?1645412974></script>
+<script src=/js/perfect-scrollbar.jquery.min.js?1645412974></script>
+<script src=/js/jquery.sticky.js?1645412974></script>
+<script src=/js/featherlight.min.js?1645412974></script>
+<script src=/js/highlight.pack.js?1645412974></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script src=/js/modernizr.custom-3.6.0.js?1645412974></script>
+<script src=/js/learn.js?1645412974></script>
+<script src=/js/hugo-learn.js?1645412974></script>
+<link href=/mermaid/mermaid.css?1645412974 rel=stylesheet>
+<script src=/mermaid/mermaid.js?1645412974></script>
+<script>mermaid.initialize({startOnLoad:!0})</script>
+</body>
+</html>

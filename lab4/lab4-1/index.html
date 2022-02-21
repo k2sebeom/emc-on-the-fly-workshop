@@ -1,0 +1,179 @@
+<!doctype html><html lang=ko class="js csstransforms3d">
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=generator content="Hugo 0.92.2">
+<meta name=description content="AWS DeepLens 와  Amazon Rekognition 을 이용한 얼굴 인식 기기 만들기">
+<meta name=author content="SeBeom Lee">
+<link rel=icon href=/images/favicon.png type=image/png>
+<title>On the Fly 로 HLS 시청하기 (기본) :: AWS DeepLens를 이용한 얼굴 인식 기기 만들기</title>
+<link href=/css/nucleus.css?1645412974 rel=stylesheet>
+<link href=/css/fontawesome-all.min.css?1645412974 rel=stylesheet>
+<link href=/css/hybrid.css?1645412974 rel=stylesheet>
+<link href=/css/featherlight.min.css?1645412974 rel=stylesheet>
+<link href=/css/perfect-scrollbar.min.css?1645412974 rel=stylesheet>
+<link href=/css/auto-complete.css?1645412974 rel=stylesheet>
+<link href=/css/atom-one-dark-reasonable.css?1645412974 rel=stylesheet>
+<link href=/css/theme.css?1645412974 rel=stylesheet>
+<link href=/css/hugo-theme.css?1645412974 rel=stylesheet>
+<link href=/css/theme-aws.css?1645412974 rel=stylesheet>
+<script src=/js/jquery-3.3.1.min.js?1645412974></script>
+<style>:root #header+#content>#left>#rlblock_left{display:none!important}</style>
+</head>
+<body data-url=/lab4/lab4-1/>
+<nav id=sidebar class=showVisitedLinks>
+<div id=header-wrapper>
+<div id=header>
+<a id=logo href=/>
+<img src=/images/logo.png height=70px>
+</a>
+</div>
+<div class=searchbox>
+<label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder>
+<span data-search-clear><i class="fas fa-times"></i></span>
+</div>
+<script type=text/javascript src=/js/lunr.min.js?1645412974></script>
+<script type=text/javascript src=/js/auto-complete.js?1645412974></script>
+<script type=text/javascript>var baseurl="/"</script>
+<script type=text/javascript src=/js/search.js?1645412974></script>
+</div>
+<div class=highlightable>
+<ul class=topics>
+<li data-nav-id=/lab0/ title="S3 버킷 생성하기" class=dd-item>
+<a href=/lab0/>
+<b>1. </b>S3 버킷 생성하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab1/ title="Elemental MediaConvert 설정하기" class=dd-item>
+<a href=/lab1/>
+<b>2. </b>Elemental MediaConvert 설정하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab2/ title="Lambda 함수 설정하기" class=dd-item>
+<a href=/lab2/>
+<b>3. </b>Lambda 함수 설정하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab3/ title="CloudFront 배포 설정하기" class=dd-item>
+<a href=/lab3/>
+<b>4. </b>CloudFront 배포 설정하기
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+<li data-nav-id=/lab4/ title="On the Fly 로 HLS 시청하기" class="dd-item
+parent">
+<a href=/lab4/>
+<b>5. </b>On the Fly 로 HLS 시청하기
+<i class="fas fa-check read-icon"></i>
+</a>
+<ul>
+<li data-nav-id=/lab4/lab4-1/ title="On the Fly 로 HLS 시청하기 (기본)" class="dd-item
+parent
+active">
+<a href=/lab4/lab4-1/>
+<b>5-1. </b>On the Fly 로 HLS 시청하기 (기본)
+<i class="fas fa-check read-icon"></i>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<section id=shortcuts>
+<h3></h3>
+<ul>
+<li>
+<a class=padding href=/credits/><i class="fas fa-fw fa-bullhorn"></i> 크레딧</a>
+</li>
+</ul>
+</section>
+<section id=prefooter>
+<hr>
+<ul>
+<li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> </a></li>
+</ul>
+</section>
+<section id=footer>
+© 2020 Amazon Web Services, Inc. or its Affiliates. All rights reserved.
+</section>
+</div>
+</nav>
+<section id=body>
+<div id=overlay></div>
+<div class="padding highlightable">
+<div>
+<div id=top-bar>
+<div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb>
+<span id=sidebar-toggle-span>
+<a href=# id=sidebar-toggle data-sidebar-toggle>
+<i class="fas fa-bars"></i>
+</a>
+</span>
+<span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links>
+<a href=/>Elemental MediaConvert 를 이용한 On-the-Fly HLS 배포</a> > <a href=/lab4/>On the Fly 로 HLS 시청하기</a> > On the Fly 로 HLS 시청하기 (기본)
+</span>
+</div>
+<div class=progress>
+<div class=wrapper>
+<nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#mediaconvert-작업-실행-함수>MediaConvert 작업 실행 함수</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id=head-tags>
+</div>
+<div id=body-inner>
+<h1>
+On the Fly 로 HLS 시청하기 (기본)
+</h1>
+<p><img src=/static/diagram.png alt=Diagram></p>
+<h3 id=mediaconvert-작업-실행-함수>MediaConvert 작업 실행 함수</h3>
+<ol>
+<li><a href=https://console.aws.amazon.com/s3>S3 콘솔</a> 에 접속합니다.</li>
+<li>소스 버킷을 선택합니다.</li>
+<li>&ldquo;업로드"를 눌러 동영상 파일을 업로드합니다.</li>
+<li><a href=https://github.com/k2sebeom/mediaconvert-on-the-fly/tree/main/demo/player.html>다음 코드</a> 을 다운받은 후, player.html 을 엽니다.</li>
+<li><a href=https://console.aws.amazon.com/mediaconvert>MediaConvert 콘솔</a> 에 접속하면, 작업이 생성되었음을 확인할 수 있습니다.</li>
+<li>작업이 InQueue 에서 Transcoding 으로 변환될 때까지 기다립니다.</li>
+<li>player.html 에서 &ldquo;{cloudfront 배포 도메인}/{확장자를 제외한 동영상 파일 이름}/master.m3u8&rdquo; 을 입력하고, play 를 누르면, 동영상이 재생됩니다. 변환이 진행되면서, 동영상의 총 길이가 점점 늘어남을 확인할 수 있습니다. (영상이 재생되지 않을 경우, 재생 가능할 만큼 충분한 양이 변환되지 않은 것이므로, 조금 더 기다렸다가 play 를 누르는 것을 반복합니다.)</li>
+</ol>
+<hr>
+<footer class=footline>
+</footer>
+</div>
+</div>
+<div id=navigation>
+<a class="nav nav-prev" href=/lab4/ title="On the Fly 로 HLS 시청하기"> <i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=/lab0/ title="S3 버킷 생성하기" style=margin-right:0><i class="fa fa-chevron-right"></i></a>
+</div>
+</section>
+<div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
+<div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
+</div>
+<script src=/js/clipboard.min.js?1645412974></script>
+<script src=/js/perfect-scrollbar.min.js?1645412974></script>
+<script src=/js/perfect-scrollbar.jquery.min.js?1645412974></script>
+<script src=/js/jquery.sticky.js?1645412974></script>
+<script src=/js/featherlight.min.js?1645412974></script>
+<script src=/js/highlight.pack.js?1645412974></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script src=/js/modernizr.custom-3.6.0.js?1645412974></script>
+<script src=/js/learn.js?1645412974></script>
+<script src=/js/hugo-learn.js?1645412974></script>
+<link href=/mermaid/mermaid.css?1645412974 rel=stylesheet>
+<script src=/mermaid/mermaid.js?1645412974></script>
+<script>mermaid.initialize({startOnLoad:!0})</script>
+</body>
+</html>
