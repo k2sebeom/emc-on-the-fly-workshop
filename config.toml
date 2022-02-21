@@ -1,19 +1,18 @@
 # baseURL 변경
-baseURL = "/"
+baseURL = "/emc-on-the-fly-workshop/"
 languageCode = "ko-KR"
 defaultContentLanguage = "ko"
 
 # title 변경
-title = "AWS DeepLens를 이용한 얼굴 인식 기기 만들기"
+title = "Elemental MediaConvert 를 이용한 On-the-Fly HLS 배포"
 theme = "hugo-theme-learn"
 themesdir = "."
 metaDataFormat = "yaml"
 defaultContentLanguageInSubdir= true
-#ignoreFiles = [ "\\.*lab3\\.*" ]
 
 # description, author 변경
 [params]
-  description = "AWS DeepLens 와  Amazon Rekognition 을 이용한 얼굴 인식 기기 만들기"
+  description = "Elemental MediaConvert 를 이용한 On-the-Fly HLS 배포"
   author = "SeBeom Lee"
   showVisitedLinks = true
   disableBreadcrumb = false
@@ -24,7 +23,7 @@ defaultContentLanguageInSubdir= true
 home = [ "HTML", "RSS", "JSON"]
 
 [Languages.ko]
-title = "AWS DeepLens를 이용한 얼굴 인식 기기 만들기"
+title = "Elemental MediaConvert 를 이용한 On-the-Fly HLS 배포"
 weight = 1
 languageName = "한국어"
 
