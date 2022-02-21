@@ -4,7 +4,7 @@ weight: 40
 pre: "<b>3. </b>"
 ---
 
-![Diagram](/static/diagram.png)
+![Diagram](images/diagram.png)
 
 Lambda 함수를 이용해서 사용자가 동영상을 업로드 했을 때에 MediaConvert 작업을 실행하고, HLS 을 위한 manifest 파일을 작성해줍니다.
 
@@ -23,8 +23,8 @@ SOURCE_BUCKET = "{Source S3 Bucket Name}" # 소스 버킷 이름 (워크샵에�
 DEST_BUCKET = "{Destination S3 Bucket Name}" # 결과 버킷 이름 (워크샵에서는 emc-on-the-fly-destination)
 ```
 ### MediaConvert 작업 실행 함수 트리거 설정하기
-1. Lambda 함수의 "트리거 추가" 를 선택합니다. ![LAMBDA1](/static/ko/lambda1.png)
-1. S3 를 선택 후, 소스 버킷을 선택합니다. 이하 값들은 기본값으로 설정하고, 트리거를 생성합니다. ![LAMBDA](/static/ko/lambda2.png)
+1. Lambda 함수의 "트리거 추가" 를 선택합니다. ![LAMBDA1](images/ko/lambda1.png)
+1. S3 를 선택 후, 소스 버킷을 선택합니다. 이하 값들은 기본값으로 설정하고, 트리거를 생성합니다. ![LAMBDA](images/ko/lambda2.png)
 
 ### Manifest 준비 함수
 1. [Lambda 콘솔](https://console.aws.amazon.com/lambda) 에 접속합니다.
@@ -38,13 +38,13 @@ DEST_BUCKET = "{Destination S3 Bucket Name}" # 결과 버킷 이름 (워크샵�
 ### Manifest 준비 함수 트리거 설정하기
 1. Lambda 함수의 "트리거 추가" 를 선택합니다.
 1. S3 를 선택 후, 결과 버킷을 선택합니다.
-1. 접미사 항목에 "p.m3u8" 을 입력합니다. ![LAMBDA](/static/ko/lambda3.png)
+1. 접미사 항목에 "p.m3u8" 을 입력합니다. ![LAMBDA](images/ko/lambda3.png)
 1. 트리거를 생성합니다.
 
 ### Lambda 함수 권한 설정하기
 1. 두 함수 모두, 구성-권한 을 선택합니다.
 1. 역할 이름 밑의 링크를 클릭합니다.
-1. 정책 연결을 누른 후, AmazonS3FullAccess 와 AWSElementalMediaConvertFullAccess 정책을 연결합니다. ![LAMBDA](/static/ko/lambda4.png)
+1. 정책 연결을 누른 후, AmazonS3FullAccess 와 AWSElementalMediaConvertFullAccess 정책을 연결합니다. ![LAMBDA](images/ko/lambda4.png)
 
 ---
 <p align="center">

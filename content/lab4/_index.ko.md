@@ -4,7 +4,7 @@ weight: 60
 pre: "<b>5. </b>"
 ---
 
-![Diagram](/static/diagram.png)
+![Diagram](images/diagram.png)
 
 On the Fly 로 구성된 아키텍쳐를 통해 MediaConvert 작업이 진행되는 동안 영상을 시청해봅니다.
 

@@ -4,7 +4,7 @@ weight: 60
 pre: "<b>5-1. </b>"
 ---
 
-![Diagram](/static/diagram.png)
+![Diagram](images/diagram.png)
 
 
 ### MediaConvert 작업 실행 함수
